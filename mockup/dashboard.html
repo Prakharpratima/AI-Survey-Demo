@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Platform Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">SurveyAI Platform</div>
+                <nav class="nav">
+                    <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                    <a href="survey-builder.html" class="nav-link">Survey Builder</a>
+                    <a href="approval-workflow.html" class="nav-link">Approvals</a>
+                    <a href="analytics.html" class="nav-link">Analytics</a>
+                </nav>
+                <div class="user-menu">
+                    <span>Welcome, Admin</span>
+                    <button class="btn btn-secondary btn-sm">Profile</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 2rem 0;">
+        <!-- Dashboard Stats -->
+        <div class="dashboard-grid">
+            <div class="stats-card">
+                <div class="stats-number">12</div>
+                <div class="stats-label">Active Surveys</div>
+            </div>
+            <div class="stats-card">
+                <div class="stats-number">1,247</div>
+                <div class="stats-label">Total Responses</div>
+            </div>
+            <div class="stats-card">
+                <div class="stats-number">3</div>
+                <div class="stats-label">Pending Approvals</div>
+            </div>
+            <div class="stats-card">
+                <div class="stats-number">89%</div>
+                <div class="stats-label">Completion Rate</div>
+            </div>
+        </div>
+
+        <!-- Recent Surveys -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Recent Surveys</h2>
+                <p class="card-subtitle">Manage your surveys and track their performance</p>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; gap: 1rem;">
+                    <!-- Survey Item 1 -->
+                    <div class="question-card">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <div>
+                                <h3 class="question-title">Customer Satisfaction Survey 2024</h3>
+                                <p class="question-description">Quarterly customer feedback collection</p>
+                            </div>
+                            <span class="status-badge status-published">Published</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; gap: 2rem; font-size: 0.875rem; color: var(--text-secondary);">
+                                <span>📊 342 responses</span>
+                                <span>📅 Created 2 days ago</span>
+                                <span>👁️ 1,200 views</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-secondary btn-sm">View</button>
+                                <button class="btn btn-primary btn-sm">Analytics</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Survey Item 2 -->
+                    <div class="question-card">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <div>
+                                <h3 class="question-title">Employee Engagement Survey</h3>
+                                <p class="question-description">Annual employee satisfaction and engagement assessment</p>
+                            </div>
+                            <span class="status-badge status-review">Under Review</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; gap: 2rem; font-size: 0.875rem; color: var(--text-secondary);">
+                                <span>📊 0 responses</span>
+                                <span>📅 Created 1 week ago</span>
+                                <span>👁️ 0 views</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-secondary btn-sm">Edit</button>
+                                <button class="btn btn-warning btn-sm">Review</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Survey Item 3 -->
+                    <div class="question-card">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <div>
+                                <h3 class="question-title">Product Feedback Form</h3>
+                                <p class="question-description">Collecting user feedback on new product features</p>
+                            </div>
+                            <span class="status-badge status-approved">Approved</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; gap: 2rem; font-size: 0.875rem; color: var(--text-secondary);">
+                                <span>📊 0 responses</span>
+                                <span>📅 Created 3 days ago</span>
+                                <span>👁️ 0 views</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-secondary btn-sm">Preview</button>
+                                <button class="btn btn-success btn-sm">Publish</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-primary">Create New Survey</button>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card" style="margin-top: 2rem;">
+            <div class="card-header">
+                <h2 class="card-title">Quick Actions</h2>
+                <p class="card-subtitle">Common tasks and shortcuts</p>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <a href="survey-builder.html" class="btn btn-primary" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📝</div>
+                        <div>Create Survey</div>
+                    </a>
+                    <a href="approval-workflow.html" class="btn btn-secondary" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">✅</div>
+                        <div>Review Surveys</div>
+                    </a>
+                    <a href="analytics.html" class="btn btn-secondary" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+                        <div>View Analytics</div>
+                    </a>
+                    <a href="question-types.html" class="btn btn-secondary" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">❓</div>
+                        <div>Question Types</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to survey cards
+            const surveyCards = document.querySelectorAll('.question-card');
+            surveyCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

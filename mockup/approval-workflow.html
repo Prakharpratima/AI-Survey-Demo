@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approval Workflow - Survey Review & Approval</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">SurveyAI Platform</div>
+                <nav class="nav">
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="survey-builder.html" class="nav-link">Survey Builder</a>
+                    <a href="approval-workflow.html" class="nav-link active">Approvals</a>
+                    <a href="analytics.html" class="nav-link">Analytics</a>
+                </nav>
+                <div class="user-menu">
+                    <span>Welcome, Admin</span>
+                    <button class="btn btn-secondary btn-sm">Profile</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 2rem 0;">
+        <!-- Workflow Status Overview -->
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Approval Workflow</h1>
+                <p class="card-subtitle">Review and approve surveys before publication</p>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                    <div class="stats-card">
+                        <div class="stats-number">3</div>
+                        <div class="stats-label">Pending Review</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number">1</div>
+                        <div class="stats-label">Awaiting Final Approval</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number">12</div>
+                        <div class="stats-label">Approved This Month</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-number">2</div>
+                        <div class="stats-label">Rejected This Month</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="card" style="margin-top: 1rem;">
+            <div class="card-body">
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                    <button class="btn btn-primary">All (16)</button>
+                    <button class="btn btn-secondary">Pending Review (3)</button>
+                    <button class="btn btn-secondary">Under Review (2)</button>
+                    <button class="btn btn-secondary">Awaiting Approval (1)</button>
+                    <button class="btn btn-secondary">Approved (8)</button>
+                    <button class="btn btn-secondary">Rejected (2)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Survey Review List -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Surveys Awaiting Review</h2>
+                <p class="card-subtitle">Review surveys and provide feedback</p>
+            </div>
+            <div class="card-body">
+                <!-- Survey 1 - Pending Review -->
+                <div class="question-card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <div>
+                            <h3 class="question-title">Employee Engagement Survey 2024</h3>
+                            <p class="question-description">Annual employee satisfaction and engagement assessment</p>
+                            <div style="display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                                <span>👤 Created by: John Smith</span>
+                                <span>📅 Submitted: 2 days ago</span>
+                                <span>⏱️ Estimated time: 15 min</span>
+                            </div>
+                        </div>
+                        <span class="status-badge status-review">Pending Review</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-primary btn-sm">Review Survey</button>
+                            <button class="btn btn-secondary btn-sm">Preview</button>
+                            <button class="btn btn-secondary btn-sm">View Details</button>
+                        </div>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                            12 questions • 3 question types
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Survey 2 - Under Review -->
+                <div class="question-card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <div>
+                            <h3 class="question-title">Product Feedback Form</h3>
+                            <p class="question-description">Collecting user feedback on new product features</p>
+                            <div style="display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                                <span>👤 Created by: Sarah Johnson</span>
+                                <span>📅 Submitted: 1 week ago</span>
+                                <span>👁️ Currently reviewing: Mike Wilson</span>
+                            </div>
+                        </div>
+                        <span class="status-badge status-review">Under Review</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-secondary btn-sm">View Progress</button>
+                            <button class="btn btn-secondary btn-sm">Preview</button>
+                        </div>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                            8 questions • 4 question types
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Survey 3 - Awaiting Final Approval -->
+                <div class="question-card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <div>
+                            <h3 class="question-title">Customer Satisfaction Survey</h3>
+                            <p class="question-description">Quarterly customer feedback collection</p>
+                            <div style="display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                                <span>👤 Created by: Alex Brown</span>
+                                <span>📅 Submitted: 3 days ago</span>
+                                <span>✅ Reviewed by: Lisa Davis</span>
+                            </div>
+                        </div>
+                        <span class="status-badge status-approved">Awaiting Final Approval</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn btn-success btn-sm">Approve & Publish</button>
+                            <button class="btn btn-warning btn-sm">Request Changes</button>
+                            <button class="btn btn-secondary btn-sm">Preview</button>
+                        </div>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                            15 questions • 5 question types
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Process Details -->
+        <div class="card" style="margin-top: 2rem;">
+            <div class="card-header">
+                <h2 class="card-title">Review Process</h2>
+                <p class="card-subtitle">Understanding the approval workflow</p>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary-color);">1. Submission</h3>
+                        <p style="color: var(--text-secondary);">Survey creator submits survey for review with all required information and questions configured.</p>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--warning-color);">2. Initial Review</h3>
+                        <p style="color: var(--text-secondary);">Assigned reviewer examines survey content, question quality, and overall structure.</p>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--accent-color);">3. Final Approval</h3>
+                        <p style="color: var(--text-secondary);">Senior approver gives final approval or requests changes before publication.</p>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--success-color);">4. Publication</h3>
+                        <p style="color: var(--text-secondary);">Approved survey is published and made available to target audience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Guidelines -->
+        <div class="card" style="margin-top: 2rem;">
+            <div class="card-header">
+                <h2 class="card-title">Review Guidelines</h2>
+                <p class="card-subtitle">What to look for during review</p>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">Content Quality</h3>
+                        <ul style="color: var(--text-secondary); line-height: 1.8;">
+                            <li>Questions are clear and unambiguous</li>
+                            <li>No leading or biased questions</li>
+                            <li>Appropriate question types for data collection</li>
+                            <li>Logical question flow and order</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">Technical Aspects</h3>
+                        <ul style="color: var(--text-secondary); line-height: 1.8;">
+                            <li>All questions are properly configured</li>
+                            <li>Branching logic works correctly</li>
+                            <li>Required fields are marked appropriately</li>
+                            <li>Survey settings are correct</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">Compliance</h3>
+                        <ul style="color: var(--text-secondary); line-height: 1.8;">
+                            <li>Follows data privacy regulations</li>
+                            <li>Includes necessary consent statements</li>
+                            <li>Appropriate for target audience</li>
+                            <li>Meets company standards</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card" style="margin-top: 2rem;">
+            <div class="card-header">
+                <h2 class="card-title">Recent Activity</h2>
+                <p class="card-subtitle">Latest actions in the approval workflow</p>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; gap: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--background-secondary); border-radius: var(--radius);">
+                        <div style="width: 40px; height: 40px; background: var(--success-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">✓</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 500;">Customer Feedback Survey approved and published</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">2 hours ago by Mike Wilson</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--background-secondary); border-radius: var(--radius);">
+                        <div style="width: 40px; height: 40px; background: var(--warning-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">!</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 500;">Employee Survey returned for changes</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">1 day ago by Lisa Davis</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--background-secondary); border-radius: var(--radius);">
+                        <div style="width: 40px; height: 40px; background: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">👁️</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 500;">Product Survey submitted for review</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">2 days ago by Alex Brown</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter button functionality
+            const filterBtns = document.querySelectorAll('.card-body .btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('btn-primary'));
+                    filterBtns.forEach(b => b.classList.add('btn-secondary'));
+                    this.classList.remove('btn-secondary');
+                    this.classList.add('btn-primary');
+                });
+            });
+
+            // Survey card interactions
+            const surveyCards = document.querySelectorAll('.question-card');
+            surveyCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

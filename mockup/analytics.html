@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - Survey Insights & AI Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .chart-container {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .chart-placeholder {
+            height: 200px;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            border: 2px dashed var(--border-color);
+        }
+        
+        .ai-insights {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .insight-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .insight-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1.125rem;
+        }
+        
+        .insight-description {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        
+        .action-points {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius);
+            padding: 1rem;
+        }
+        
+        .action-point {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+        }
+        
+        .action-point:last-child {
+            margin-bottom: 0;
+        }
+        
+        .action-icon {
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-change {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .metric-change.positive {
+            color: var(--success-color);
+        }
+        
+        .metric-change.negative {
+            color: var(--error-color);
+        }
+        
+        .response-item {
+            background: white;
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .response-id {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .response-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        .response-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .sentiment-positive {
+            border-left-color: var(--success-color);
+        }
+        
+        .sentiment-negative {
+            border-left-color: var(--error-color);
+        }
+        
+        .sentiment-neutral {
+            border-left-color: var(--warning-color);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">SurveyAI Platform</div>
+                <nav class="nav">
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="survey-builder.html" class="nav-link">Survey Builder</a>
+                    <a href="approval-workflow.html" class="nav-link">Approvals</a>
+                    <a href="analytics.html" class="nav-link active">Analytics</a>
+                </nav>
+                <div class="user-menu">
+                    <span>Welcome, Admin</span>
+                    <button class="btn btn-secondary btn-sm">Profile</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 2rem 0;">
+        <!-- Survey Selection -->
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Analytics Dashboard</h1>
+                <p class="card-subtitle">AI-powered insights and survey analysis</p>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Select Survey</label>
+                        <select class="form-input form-select">
+                            <option>Customer Satisfaction Survey 2024</option>
+                            <option>Employee Engagement Survey</option>
+                            <option>Product Feedback Form</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Date Range</label>
+                        <select class="form-input form-select">
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                            <option>Last 3 months</option>
+                            <option>All time</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Analysis Type</label>
+                        <select class="form-input form-select">
+                            <option>AI-Powered Analysis</option>
+                            <option>Basic Statistics</option>
+                            <option>Sentiment Analysis</option>
+                            <option>Trend Analysis</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="dashboard-grid">
+            <div class="metric-card">
+                <div class="metric-value" style="color: var(--primary-color);">342</div>
+                <div class="metric-label">Total Responses</div>
+                <div class="metric-change positive">+12% from last month</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" style="color: var(--success-color);">89%</div>
+                <div class="metric-label">Completion Rate</div>
+                <div class="metric-change positive">+5% from last month</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" style="color: var(--accent-color);">4.2</div>
+                <div class="metric-label">Average Rating</div>
+                <div class="metric-change positive">+0.3 from last month</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" style="color: var(--warning-color);">15min</div>
+                <div class="metric-label">Avg. Completion Time</div>
+                <div class="metric-change negative">+2min from last month</div>
+            </div>
+        </div>
+
+        <!-- AI-Powered Insights -->
+        <div class="ai-insights">
+            <h2 style="margin-bottom: 1.5rem;">🤖 AI Analysis & Insights</h2>
+            
+            <div class="insight-item">
+                <div class="insight-title">Overall Sentiment Analysis</div>
+                <div class="insight-description">
+                    Based on 342 responses, customers show a generally positive sentiment (78% positive, 15% neutral, 7% negative). 
+                    The NPS score of 42 indicates strong customer advocacy.
+                </div>
+                <div class="action-points">
+                    <div class="action-point">
+                        <div class="action-icon">📈</div>
+                        <div>Focus on maintaining current service quality to preserve positive sentiment</div>
+                    </div>
+                    <div class="action-point">
+                        <div class="action-icon">🎯</div>
+                        <div>Address the 7% negative feedback through targeted follow-up surveys</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-item">
+                <div class="insight-title">Key Improvement Areas</div>
+                <div class="insight-description">
+                    AI analysis identified three main areas for improvement based on open-text responses and ratings.
+                </div>
+                <div class="action-points">
+                    <div class="action-point">
+                        <div class="action-icon">⚡</div>
+                        <div>Improve response time - mentioned in 23% of feedback</div>
+                    </div>
+                    <div class="action-point">
+                        <div class="action-icon">📱</div>
+                        <div>Enhance mobile app functionality - mentioned in 18% of feedback</div>
+                    </div>
+                    <div class="action-point">
+                        <div class="action-icon">💬</div>
+                        <div>Better communication during service updates - mentioned in 15% of feedback</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-item">
+                <div class="insight-title">Customer Segmentation Insights</div>
+                <div class="insight-description">
+                    Analysis reveals distinct patterns across customer segments that can inform targeted strategies.
+                </div>
+                <div class="action-points">
+                    <div class="action-point">
+                        <div class="action-icon">👥</div>
+                        <div>Premium customers show 15% higher satisfaction - leverage for testimonials</div>
+                    </div>
+                    <div class="action-point">
+                        <div class="action-icon">🔄</div>
+                        <div>New customers need onboarding improvements - create welcome series</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts and Visualizations -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div class="chart-container">
+                <div class="chart-title">Satisfaction Rating Distribution</div>
+                <div class="chart-placeholder">
+                    📊 Bar Chart: Very Satisfied (45%), Satisfied (33%), Neutral (15%), Dissatisfied (5%), Very Dissatisfied (2%)
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-title">Response Trends Over Time</div>
+                <div class="chart-placeholder">
+                    📈 Line Chart: Daily response count showing upward trend
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-title">NPS Score Breakdown</div>
+                <div class="chart-placeholder">
+                    🎯 Gauge Chart: NPS Score 42 (Promoters 65%, Passives 20%, Detractors 15%)
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-title">Feature Usage Analysis</div>
+                <div class="chart-placeholder">
+                    🍰 Pie Chart: Mobile App (40%), Web Dashboard (35%), API (15%), Support (10%)
+                </div>
+            </div>
+        </div>
+
+        <!-- Response Analysis -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Response Analysis</h2>
+                <p class="card-subtitle">Detailed analysis of survey responses with AI-powered insights</p>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                    <div class="metric-card">
+                        <div class="metric-value" style="color: var(--success-color);">78%</div>
+                        <div class="metric-label">Positive Sentiment</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" style="color: var(--warning-color);">15%</div>
+                        <div class="metric-label">Neutral Sentiment</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" style="color: var(--error-color);">7%</div>
+                        <div class="metric-label">Negative Sentiment</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 1rem;">Recent Responses with Sentiment Analysis</h3>
+                <div style="max-height: 400px; overflow-y: auto;">
+                    <div class="response-item sentiment-positive">
+                        <div class="response-header">
+                            <span class="response-id">Response #342</span>
+                            <span class="response-date">2 hours ago</span>
+                        </div>
+                        <div class="response-content">
+                            "Excellent service! The team was very responsive and helped me resolve my issue quickly. Highly recommend!"
+                        </div>
+                    </div>
+                    
+                    <div class="response-item sentiment-positive">
+                        <div class="response-header">
+                            <span class="response-id">Response #341</span>
+                            <span class="response-date">3 hours ago</span>
+                        </div>
+                        <div class="response-content">
+                            "Great experience overall. The mobile app is intuitive and the customer support is top-notch."
+                        </div>
+                    </div>
+                    
+                    <div class="response-item sentiment-neutral">
+                        <div class="response-header">
+                            <span class="response-id">Response #340</span>
+                            <span class="response-date">4 hours ago</span>
+                        </div>
+                        <div class="response-content">
+                            "Service is okay, nothing exceptional but gets the job done. Could use some improvements in the user interface."
+                        </div>
+                    </div>
+                    
+                    <div class="response-item sentiment-negative">
+                        <div class="response-header">
+                            <span class="response-id">Response #339</span>
+                            <span class="response-date">5 hours ago</span>
+                        </div>
+                        <div class="response-content">
+                            "Had some issues with the billing system. Took longer than expected to resolve. Customer service could be more proactive."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Items -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Recommended Actions</h2>
+                <p class="card-subtitle">AI-generated action items based on survey analysis</p>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; gap: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--background-secondary); border-radius: var(--radius);">
+                        <div style="width: 40px; height: 40px; background: var(--success-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">1</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; margin-bottom: 0.25rem;">Implement Response Time Improvements</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Priority: High • Timeline: 2 weeks</div>
+                        </div>
+                        <button class="btn btn-primary btn-sm">Start Action</button>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--background-secondary); border-radius: var(--radius);">
+                        <div style="width: 40px; height: 40px; background: var(--warning-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">2</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; margin-bottom: 0.25rem;">Enhance Mobile App Features</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Priority: Medium • Timeline: 1 month</div>
+                        </div>
+                        <button class="btn btn-secondary btn-sm">Plan Action</button>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--background-secondary); border-radius: var(--radius);">
+                        <div style="width: 40px; height: 40px; background: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">3</div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; margin-bottom: 0.25rem;">Create Customer Communication Strategy</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Priority: Medium • Timeline: 3 weeks</div>
+                        </div>
+                        <button class="btn btn-secondary btn-sm">Plan Action</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export and Share -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Export & Share</h2>
+                <p class="card-subtitle">Export analysis results and share insights</p>
+            </div>
+            <div class="card-body">
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button class="btn btn-primary">📊 Export PDF Report</button>
+                    <button class="btn btn-secondary">📈 Export Excel Data</button>
+                    <button class="btn btn-secondary">📧 Email Report</button>
+                    <button class="btn btn-secondary">🔗 Share Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add interactivity to action items
+            const actionButtons = document.querySelectorAll('.btn[style*="Start Action"], .btn[style*="Plan Action"]');
+            actionButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const actionText = this.textContent;
+                    if (actionText.includes('Start Action')) {
+                        this.textContent = 'In Progress';
+                        this.classList.remove('btn-primary');
+                        this.classList.add('btn-warning');
+                    } else if (actionText.includes('Plan Action')) {
+                        this.textContent = 'Planned';
+                        this.classList.remove('btn-secondary');
+                        this.classList.add('btn-success');
+                    }
+                });
+            });
+
+            // Simulate chart interactions
+            const chartPlaceholders = document.querySelectorAll('.chart-placeholder');
+            chartPlaceholders.forEach(chart => {
+                chart.addEventListener('click', function() {
+                    alert('This would open a detailed chart view with interactive features');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

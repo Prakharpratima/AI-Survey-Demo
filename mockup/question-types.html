@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Types - Survey Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .question-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .question-demo {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        
+        .question-demo:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .question-type-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .question-type-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .question-preview {
+            background: var(--background-secondary);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .mobile-preview {
+            max-width: 300px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+        
+        .mobile-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .mobile-option:hover {
+            border-color: var(--primary-color);
+            background: rgba(124, 58, 237, 0.05);
+        }
+        
+        .mobile-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(124, 58, 237, 0.1);
+        }
+        
+        .mobile-option input[type="radio"],
+        .mobile-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+        }
+        
+        .mobile-option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.875rem;
+        }
+        
+        .rating-mobile {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1rem 0;
+        }
+        
+        .rating-option-mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .rating-option-mobile:hover {
+            background: rgba(124, 58, 237, 0.1);
+        }
+        
+        .rating-option-mobile.selected {
+            background: rgba(124, 58, 237, 0.2);
+        }
+        
+        .rating-number-mobile {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border: 2px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        
+        .rating-option-mobile.selected .rating-number-mobile {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .star-rating {
+            display: flex;
+            gap: 0.25rem;
+            margin: 1rem 0;
+        }
+        
+        .star {
+            font-size: 1.5rem;
+            color: var(--border-color);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .star.active {
+            color: #fbbf24;
+        }
+        
+        .star:hover {
+            color: #fbbf24;
+        }
+        
+        .smiley-rating {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0;
+        }
+        
+        .smiley-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .smiley-option:hover {
+            background: rgba(124, 58, 237, 0.1);
+        }
+        
+        .smiley-option.selected {
+            background: rgba(124, 58, 237, 0.2);
+        }
+        
+        .smiley {
+            font-size: 2rem;
+        }
+        
+        .slider-container {
+            margin: 1rem 0;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border-color);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: none;
+        }
+        
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .matrix-table th,
+        .matrix-table td {
+            padding: 0.5rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            font-size: 0.75rem;
+        }
+        
+        .matrix-table th {
+            background: var(--background-secondary);
+            font-weight: 600;
+        }
+        
+        .matrix-table input[type="radio"] {
+            margin: 0;
+        }
+        
+        .file-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--primary-color);
+            background: rgba(124, 58, 237, 0.05);
+        }
+        
+        .file-upload-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+        
+        .date-time-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">SurveyAI Platform</div>
+                <nav class="nav">
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="survey-builder.html" class="nav-link">Survey Builder</a>
+                    <a href="approval-workflow.html" class="nav-link">Approvals</a>
+                    <a href="analytics.html" class="nav-link">Analytics</a>
+                </nav>
+                <div class="user-menu">
+                    <span>Welcome, Admin</span>
+                    <button class="btn btn-secondary btn-sm">Profile</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 2rem 0;">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Question Types Showcase</h1>
+                <p class="card-subtitle">Explore all available question types with mobile-optimized previews</p>
+            </div>
+        </div>
+
+        <div class="question-showcase">
+            <!-- Single Choice -->
+            <div class="question-demo">
+                <div class="question-type-title">Single Choice</div>
+                <div class="question-type-description">Allow respondents to select one option from a list of choices</div>
+                <div class="question-preview">
+                    <div class="question-text">How satisfied are you with our service?</div>
+                    <div class="mobile-preview">
+                        <div class="mobile-option">
+                            <input type="radio" name="satisfaction" id="very-satisfied">
+                            <label for="very-satisfied">Very Satisfied</label>
+                        </div>
+                        <div class="mobile-option">
+                            <input type="radio" name="satisfaction" id="satisfied">
+                            <label for="satisfied">Satisfied</label>
+                        </div>
+                        <div class="mobile-option">
+                            <input type="radio" name="satisfaction" id="neutral">
+                            <label for="neutral">Neutral</label>
+                        </div>
+                        <div class="mobile-option">
+                            <input type="radio" name="satisfaction" id="dissatisfied">
+                            <label for="dissatisfied">Dissatisfied</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Multiple Choice -->
+            <div class="question-demo">
+                <div class="question-type-title">Multiple Choice</div>
+                <div class="question-type-description">Allow respondents to select multiple options from a list</div>
+                <div class="question-preview">
+                    <div class="question-text">Which features do you use most often? (Select all that apply)</div>
+                    <div class="mobile-preview">
+                        <div class="mobile-option">
+                            <input type="checkbox" name="features" id="mobile-app">
+                            <label for="mobile-app">Mobile App</label>
+                        </div>
+                        <div class="mobile-option">
+                            <input type="checkbox" name="features" id="web-dashboard">
+                            <label for="web-dashboard">Web Dashboard</label>
+                        </div>
+                        <div class="mobile-option">
+                            <input type="checkbox" name="features" id="api">
+                            <label for="api">API Integration</label>
+                        </div>
+                        <div class="mobile-option">
+                            <input type="checkbox" name="features" id="support">
+                            <label for="support">Customer Support</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Star Rating -->
+            <div class="question-demo">
+                <div class="question-type-title">Star Rating</div>
+                <div class="question-type-description">Visual star-based rating system (1-5 stars)</div>
+                <div class="question-preview">
+                    <div class="question-text">Rate your overall experience</div>
+                    <div class="mobile-preview">
+                        <div class="star-rating">
+                            <span class="star active">★</span>
+                            <span class="star active">★</span>
+                            <span class="star active">★</span>
+                            <span class="star active">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <div style="text-align: center; font-size: 0.75rem; color: var(--text-secondary);">4 out of 5 stars</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NPS Scale -->
+            <div class="question-demo">
+                <div class="question-type-title">NPS Scale</div>
+                <div class="question-type-description">Net Promoter Score scale (0-10) for customer loyalty measurement</div>
+                <div class="question-preview">
+                    <div class="question-text">How likely are you to recommend us to a friend?</div>
+                    <div class="mobile-preview">
+                        <div class="rating-mobile">
+                            <span style="font-size: 0.75rem; color: var(--text-secondary);">Not likely</span>
+                            <div style="display: flex; gap: 0.25rem;">
+                                <div class="rating-option-mobile">
+                                    <div class="rating-number-mobile">0</div>
+                                </div>
+                                <div class="rating-option-mobile">
+                                    <div class="rating-number-mobile">1</div>
+                                </div>
+                                <div class="rating-option-mobile">
+                                    <div class="rating-number-mobile">2</div>
+                                </div>
+                                <div class="rating-option-mobile">
+                                    <div class="rating-number-mobile">3</div>
+                                </div>
+                                <div class="rating-option-mobile">
+                                    <div class="rating-number-mobile">4</div>
+                                </div>
+                                <div class="rating-option-mobile selected">
+                                    <div class="rating-number-mobile">5</div>
+                                </div>
+                                <div class="rating-option-mobile">
+                                    <div class="rating-number-mobile">6</div>
+                                </div>
+                                <div class="rating-option-mobile">
+                                    <div class="rating-number-mobile">7</div>
+                                </div>
+                                <div class="rating-option-mobile">
+                                    <div class="rating-number-mobile">8</div>
+                                </div>
+                                <div class="rating-option-mobile">
+                                    <div class="rating-number-mobile">9</div>
+                                </div>
+                                <div class="rating-option-mobile">
+                                    <div class="rating-number-mobile">10</div>
+                                </div>
+                            </div>
+                            <span style="font-size: 0.75rem; color: var(--text-secondary);">Extremely likely</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smiley Rating -->
+            <div class="question-demo">
+                <div class="question-type-title">Smiley Rating</div>
+                <div class="question-type-description">Emoji-based rating system for emotional feedback</div>
+                <div class="question-preview">
+                    <div class="question-text">How do you feel about our service?</div>
+                    <div class="mobile-preview">
+                        <div class="smiley-rating">
+                            <div class="smiley-option">
+                                <div class="smiley">😞</div>
+                                <div style="font-size: 0.75rem;">Very Poor</div>
+                            </div>
+                            <div class="smiley-option">
+                                <div class="smiley">😐</div>
+                                <div style="font-size: 0.75rem;">Poor</div>
+                            </div>
+                            <div class="smiley-option">
+                                <div class="smiley">😊</div>
+                                <div style="font-size: 0.75rem;">Good</div>
+                            </div>
+                            <div class="smiley-option selected">
+                                <div class="smiley">😄</div>
+                                <div style="font-size: 0.75rem;">Very Good</div>
+                            </div>
+                            <div class="smiley-option">
+                                <div class="smiley">🤩</div>
+                                <div style="font-size: 0.75rem;">Excellent</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slider -->
+            <div class="question-demo">
+                <div class="question-type-title">Slider</div>
+                <div class="question-type-description">Continuous value selection using a slider control</div>
+                <div class="question-preview">
+                    <div class="question-text">Rate the quality of our customer support (0-100)</div>
+                    <div class="mobile-preview">
+                        <div class="slider-container">
+                            <input type="range" min="0" max="100" value="75" class="slider">
+                            <div class="slider-labels">
+                                <span>0</span>
+                                <span>25</span>
+                                <span>50</span>
+                                <span>75</span>
+                                <span>100</span>
+                            </div>
+                            <div style="text-align: center; margin-top: 0.5rem; font-weight: 600; color: var(--primary-color);">75</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Open Text -->
+            <div class="question-demo">
+                <div class="question-type-title">Open Text</div>
+                <div class="question-type-description">Free-form text input for detailed responses</div>
+                <div class="question-preview">
+                    <div class="question-text">Please share any additional comments or suggestions</div>
+                    <div class="mobile-preview">
+                        <textarea style="width: 100%; min-height: 80px; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius); font-size: 0.875rem;" placeholder="Type your response here..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date/Time -->
+            <div class="question-demo">
+                <div class="question-type-title">Date/Time Picker</div>
+                <div class="question-type-description">Collect specific dates and times from respondents</div>
+                <div class="question-preview">
+                    <div class="question-text">When did you last use our service?</div>
+                    <div class="mobile-preview">
+                        <input type="date" class="date-time-input" value="2024-01-15">
+                        <input type="time" class="date-time-input" value="14:30" style="margin-top: 0.5rem;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Upload -->
+            <div class="question-demo">
+                <div class="question-type-title">File Upload</div>
+                <div class="question-type-description">Allow respondents to upload documents or images</div>
+                <div class="question-preview">
+                    <div class="question-text">Upload a screenshot of any issues you encountered</div>
+                    <div class="mobile-preview">
+                        <div class="file-upload">
+                            <div class="file-upload-icon">📁</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Tap to upload file</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Max 10MB</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Matrix Question -->
+            <div class="question-demo">
+                <div class="question-type-title">Matrix Question</div>
+                <div class="question-type-description">Multiple questions with same response options in a table format</div>
+                <div class="question-preview">
+                    <div class="question-text">Rate the following aspects of our service</div>
+                    <div class="mobile-preview">
+                        <table class="matrix-table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Poor</th>
+                                    <th>Fair</th>
+                                    <th>Good</th>
+                                    <th>Excellent</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align: left;">Customer Support</td>
+                                    <td><input type="radio" name="support"></td>
+                                    <td><input type="radio" name="support"></td>
+                                    <td><input type="radio" name="support" checked></td>
+                                    <td><input type="radio" name="support"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left;">Product Quality</td>
+                                    <td><input type="radio" name="quality"></td>
+                                    <td><input type="radio" name="quality"></td>
+                                    <td><input type="radio" name="quality"></td>
+                                    <td><input type="radio" name="quality" checked></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left;">Ease of Use</td>
+                                    <td><input type="radio" name="ease"></td>
+                                    <td><input type="radio" name="ease" checked></td>
+                                    <td><input type="radio" name="ease"></td>
+                                    <td><input type="radio" name="ease"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ranking -->
+            <div class="question-demo">
+                <div class="question-type-title">Ranking</div>
+                <div class="question-type-description">Allow respondents to rank items in order of preference</div>
+                <div class="question-preview">
+                    <div class="question-text">Rank these features by importance (1 = most important)</div>
+                    <div class="mobile-preview">
+                        <div class="mobile-option" style="justify-content: space-between;">
+                            <span>Mobile App</span>
+                            <select style="padding: 0.25rem; border: 1px solid var(--border-color); border-radius: var(--radius);">
+                                <option>1</option>
+                                <option selected>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
+                        <div class="mobile-option" style="justify-content: space-between;">
+                            <span>Web Dashboard</span>
+                            <select style="padding: 0.25rem; border: 1px solid var(--border-color); border-radius: var(--radius);">
+                                <option selected>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
+                        <div class="mobile-option" style="justify-content: space-between;">
+                            <span>API Integration</span>
+                            <select style="padding: 0.25rem; border: 1px solid var(--border-color); border-radius: var(--radius);">
+                                <option>1</option>
+                                <option>2</option>
+                                <option selected>3</option>
+                                <option>4</option>
+                            </select>
+                        </div>
+                        <div class="mobile-option" style="justify-content: space-between;">
+                            <span>Customer Support</span>
+                            <select style="padding: 0.25rem; border: 1px solid var(--border-color); border-radius: var(--radius);">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option selected>4</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Yes/No -->
+            <div class="question-demo">
+                <div class="question-type-title">Yes/No</div>
+                <div class="question-type-description">Simple binary choice question</div>
+                <div class="question-preview">
+                    <div class="question-text">Would you recommend our service to others?</div>
+                    <div class="mobile-preview">
+                        <div class="mobile-option">
+                            <input type="radio" name="recommend" id="yes">
+                            <label for="yes">Yes</label>
+                        </div>
+                        <div class="mobile-option">
+                            <input type="radio" name="recommend" id="no">
+                            <label for="no">No</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dropdown -->
+            <div class="question-demo">
+                <div class="question-type-title">Dropdown</div>
+                <div class="question-type-description">Select from a dropdown list to save space</div>
+                <div class="question-preview">
+                    <div class="question-text">What is your age range?</div>
+                    <div class="mobile-preview">
+                        <select class="date-time-input">
+                            <option>18-24</option>
+                            <option selected>25-34</option>
+                            <option>35-44</option>
+                            <option>45-54</option>
+                            <option>55-64</option>
+                            <option>65+</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Type Summary -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Question Type Summary</h2>
+                <p class="card-subtitle">All supported question types with their use cases</p>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary-color);">Text-Based Questions</h3>
+                        <ul style="color: var(--text-secondary); line-height: 1.8;">
+                            <li><strong>Open Text:</strong> Detailed feedback and comments</li>
+                            <li><strong>Short Text:</strong> Single-line responses</li>
+                            <li><strong>Email:</strong> Email address collection</li>
+                            <li><strong>Phone:</strong> Phone number collection</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary-color);">Choice-Based Questions</h3>
+                        <ul style="color: var(--text-secondary); line-height: 1.8;">
+                            <li><strong>Single Choice:</strong> One selection from options</li>
+                            <li><strong>Multiple Choice:</strong> Multiple selections allowed</li>
+                            <li><strong>Dropdown:</strong> Space-efficient selection</li>
+                            <li><strong>Yes/No:</strong> Binary choice questions</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary-color);">Rating & Scale Questions</h3>
+                        <ul style="color: var(--text-secondary); line-height: 1.8;">
+                            <li><strong>Star Rating:</strong> 1-5 star visual rating</li>
+                            <li><strong>NPS Scale:</strong> 0-10 loyalty measurement</li>
+                            <li><strong>Likert Scale:</strong> Agreement scale</li>
+                            <li><strong>Slider:</strong> Continuous value selection</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 1rem; color: var(--primary-color);">Advanced Questions</h3>
+                        <ul style="color: var(--text-secondary); line-height: 1.8;">
+                            <li><strong>Matrix:</strong> Multiple questions, same options</li>
+                            <li><strong>Ranking:</strong> Order items by preference</li>
+                            <li><strong>Date/Time:</strong> Calendar and time pickers</li>
+                            <li><strong>File Upload:</strong> Document/image upload</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add interactivity to question demos
+            const mobileOptions = document.querySelectorAll('.mobile-option');
+            mobileOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from siblings
+                    const siblings = this.parentElement.querySelectorAll('.mobile-option');
+                    siblings.forEach(sibling => sibling.classList.remove('selected'));
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                });
+            });
+
+            // Star rating interaction
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                star.addEventListener('click', function() {
+                    stars.forEach((s, i) => {
+                        if (i <= index) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            // Slider value display
+            const slider = document.querySelector('.slider');
+            if (slider) {
+                slider.addEventListener('input', function() {
+                    const value = this.value;
+                    const display = this.parentElement.querySelector('div[style*="text-align: center"]');
+                    if (display) {
+                        display.textContent = value;
+                    }
+                });
+            }
+
+            // File upload interaction
+            const fileUploads = document.querySelectorAll('.file-upload');
+            fileUploads.forEach(upload => {
+                upload.addEventListener('click', function() {
+                    alert('File upload dialog would open here');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

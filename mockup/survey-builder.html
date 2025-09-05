@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Builder - AI-Powered Survey Creation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">SurveyAI Platform</div>
+                <nav class="nav">
+                    <a href="dashboard.html" class="nav-link">Dashboard</a>
+                    <a href="survey-builder.html" class="nav-link active">Survey Builder</a>
+                    <a href="approval-workflow.html" class="nav-link">Approvals</a>
+                    <a href="analytics.html" class="nav-link">Analytics</a>
+                </nav>
+                <div class="user-menu">
+                    <span>Welcome, Admin</span>
+                    <button class="btn btn-secondary btn-sm">Profile</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 2rem 0;">
+        <!-- Survey Builder Header -->
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Create New Survey</h1>
+                <p class="card-subtitle">Build engaging surveys with AI assistance</p>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="form-label">Survey Title</label>
+                    <input type="text" class="form-input" placeholder="Enter survey title" value="Customer Satisfaction Survey 2024">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Survey Description</label>
+                    <textarea class="form-input form-textarea" placeholder="Describe the purpose of this survey">Collecting quarterly feedback from our customers to improve our products and services.</textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Target Audience</label>
+                        <select class="form-input form-select">
+                            <option>All Customers</option>
+                            <option>Premium Customers</option>
+                            <option>New Customers</option>
+                            <option>Churned Customers</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Survey Category</label>
+                        <select class="form-input form-select">
+                            <option>Customer Satisfaction</option>
+                            <option>Product Feedback</option>
+                            <option>Market Research</option>
+                            <option>Employee Survey</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Assistant -->
+        <div class="ai-assistant">
+            <h3 style="margin-bottom: 1rem;">🤖 AI Assistant</h3>
+            <div class="ai-suggestion">
+                <div class="ai-suggestion-title">💡 Suggested Questions</div>
+                <div class="ai-suggestion-text">Based on your survey purpose, I recommend adding these questions to improve data quality:</div>
+                <div style="margin-top: 1rem; display: grid; gap: 0.5rem;">
+                    <div style="background: rgba(255,255,255,0.2); padding: 0.75rem; border-radius: var(--radius);">
+                        <strong>NPS Question:</strong> "How likely are you to recommend our service to a friend or colleague?"
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 0.75rem; border-radius: var(--radius);">
+                        <strong>Rating Question:</strong> "Rate your overall satisfaction with our service (1-5 stars)"
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 0.75rem; border-radius: var(--radius);">
+                        <strong>Open Text:</strong> "What could we improve to better serve you?"
+                    </div>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <button class="btn btn-primary btn-sm">Add All Suggestions</button>
+                    <button class="btn btn-secondary btn-sm" style="margin-left: 0.5rem;">Get More Ideas</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Builder -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Survey Questions</h2>
+                <p class="card-subtitle">Add and configure questions for your survey</p>
+            </div>
+            <div class="card-body">
+                <!-- Question 1 -->
+                <div class="question-card selected">
+                    <div class="question-title">1. How satisfied are you with our service?</div>
+                    <div class="question-description">Single choice question with rating scale</div>
+                    <div class="question-options">
+                        <div class="option-item">
+                            <input type="radio" name="q1" checked>
+                            <label>Very Satisfied</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" name="q1">
+                            <label>Satisfied</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" name="q1">
+                            <label>Neutral</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" name="q1">
+                            <label>Dissatisfied</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="radio" name="q1">
+                            <label>Very Dissatisfied</label>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                        <button class="btn btn-secondary btn-sm">Edit</button>
+                        <button class="btn btn-error btn-sm">Delete</button>
+                        <button class="btn btn-secondary btn-sm">Duplicate</button>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card">
+                    <div class="question-title">2. Which features do you use most often?</div>
+                    <div class="question-description">Multiple choice question - select all that apply</div>
+                    <div class="question-options">
+                        <div class="option-item">
+                            <input type="checkbox" name="q2">
+                            <label>Mobile App</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="checkbox" name="q2">
+                            <label>Web Dashboard</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="checkbox" name="q2">
+                            <label>Email Notifications</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="checkbox" name="q2">
+                            <label>API Integration</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="checkbox" name="q2">
+                            <label>Customer Support</label>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                        <button class="btn btn-secondary btn-sm">Edit</button>
+                        <button class="btn btn-error btn-sm">Delete</button>
+                        <button class="btn btn-secondary btn-sm">Duplicate</button>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card">
+                    <div class="question-title">3. How likely are you to recommend us?</div>
+                    <div class="question-description">NPS (Net Promoter Score) question</div>
+                    <div class="question-options">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+                            <span style="font-size: 0.875rem; color: var(--text-secondary);">Not at all likely</span>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-secondary btn-sm">0</button>
+                                <button class="btn btn-secondary btn-sm">1</button>
+                                <button class="btn btn-secondary btn-sm">2</button>
+                                <button class="btn btn-secondary btn-sm">3</button>
+                                <button class="btn btn-secondary btn-sm">4</button>
+                                <button class="btn btn-secondary btn-sm">5</button>
+                                <button class="btn btn-secondary btn-sm">6</button>
+                                <button class="btn btn-secondary btn-sm">7</button>
+                                <button class="btn btn-secondary btn-sm">8</button>
+                                <button class="btn btn-secondary btn-sm">9</button>
+                                <button class="btn btn-primary btn-sm">10</button>
+                            </div>
+                            <span style="font-size: 0.875rem; color: var(--text-secondary);">Extremely likely</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                        <button class="btn btn-secondary btn-sm">Edit</button>
+                        <button class="btn btn-error btn-sm">Delete</button>
+                        <button class="btn btn-secondary btn-sm">Duplicate</button>
+                    </div>
+                </div>
+
+                <!-- Add Question Button -->
+                <div style="text-align: center; margin: 2rem 0;">
+                    <button class="btn btn-primary btn-lg">+ Add New Question</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Types Panel -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Question Types</h2>
+                <p class="card-subtitle">Choose from various question types to build your survey</p>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <button class="btn btn-secondary" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📝</div>
+                        <div>Open Text</div>
+                    </button>
+                    <button class="btn btn-secondary" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔘</div>
+                        <div>Single Choice</div>
+                    </button>
+                    <button class="btn btn-secondary" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">☑️</div>
+                        <div>Multiple Choice</div>
+                    </button>
+                    <button class="btn btn-secondary" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⭐</div>
+                        <div>Star Rating</div>
+                    </button>
+                    <button class="btn btn-secondary" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+                        <div>NPS Scale</div>
+                    </button>
+                    <button class="btn btn-secondary" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">😊</div>
+                        <div>Smiley Rating</div>
+                    </button>
+                    <button class="btn btn-secondary" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📅</div>
+                        <div>Date/Time</div>
+                    </button>
+                    <button class="btn btn-secondary" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📁</div>
+                        <div>File Upload</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Survey Settings -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Survey Settings</h2>
+                <p class="card-subtitle">Configure survey behavior and appearance</p>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">General Settings</h3>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" checked> Allow anonymous responses
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" checked> Show progress bar
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox"> Require all questions
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" checked> Allow going back
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 1rem;">Branching Logic</h3>
+                        <div class="form-group">
+                            <label class="form-label">Enable conditional logic</label>
+                            <select class="form-input form-select">
+                                <option>No branching</option>
+                                <option>Simple branching</option>
+                                <option>Advanced branching</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Thank you message</label>
+                            <textarea class="form-input form-textarea" placeholder="Thank you for completing our survey!">Thank you for taking the time to complete our survey. Your feedback is valuable to us and will help us improve our services.</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+            <div>
+                <button class="btn btn-secondary">Save as Draft</button>
+                <button class="btn btn-secondary" style="margin-left: 0.5rem;">Preview Survey</button>
+            </div>
+            <div>
+                <button class="btn btn-warning">Submit for Review</button>
+                <button class="btn btn-primary" style="margin-left: 0.5rem;">Save & Continue</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Question card selection
+            const questionCards = document.querySelectorAll('.question-card');
+            questionCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    questionCards.forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+            // Add question type buttons
+            const addQuestionBtns = document.querySelectorAll('.btn[style*="text-align: center"]');
+            addQuestionBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    alert('This would open a question type configuration modal');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

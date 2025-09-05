@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Satisfaction Survey - AI Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Mobile-first conversational survey player styles */
+        .survey-player {
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+        
+        .survey-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .conversation-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            text-align: center;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .ai-avatar-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .ai-avatar-small {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .ai-name {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .ai-status {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+        
+        .conversation-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .message {
+            display: flex;
+            gap: 0.75rem;
+            animation: slideInUp 0.5s ease;
+        }
+        
+        .message.ai {
+            align-self: flex-start;
+        }
+        
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .message.ai .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .message.user .message-avatar {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .message-content {
+            max-width: 80%;
+            padding: 1rem 1.25rem;
+            border-radius: 18px;
+            position: relative;
+            word-wrap: break-word;
+        }
+        
+        .message.ai .message-content {
+            background: white;
+            color: #374151;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-bottom-left-radius: 4px;
+        }
+        
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .message-time {
+            font-size: 0.75rem;
+            opacity: 0.6;
+            margin-top: 0.25rem;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.25rem;
+            background: white;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            max-width: 80px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #9ca3af;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        
+        .question-container {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideInUp 0.5s ease;
+        }
+        
+        .question-number {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+        
+        .answer-options {
+            margin-bottom: 2rem;
+        }
+        
+        .answer-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+        
+        .answer-option:hover {
+            border-color: var(--primary-color);
+            background: rgba(124, 58, 237, 0.05);
+            transform: translateY(-1px);
+        }
+        
+        .answer-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(124, 58, 237, 0.1);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+        }
+        
+        .answer-option input[type="radio"],
+        .answer-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin: 0;
+        }
+        
+        .answer-option label {
+            cursor: pointer;
+            flex: 1;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        
+        .rating-scale {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+        
+        .rating-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+        
+        .rating-option:hover {
+            background: rgba(124, 58, 237, 0.1);
+        }
+        
+        .rating-option.selected {
+            background: rgba(124, 58, 237, 0.2);
+        }
+        
+        .rating-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            border: 2px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        
+        .rating-option.selected .rating-number {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .rating-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        
+        .survey-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+        
+        .btn-nav {
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1rem;
+            min-width: 120px;
+        }
+        
+        .btn-nav:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .ai-avatar {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .ai-chat {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 250px;
+            display: none;
+        }
+        
+        .ai-chat.show {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .ai-message {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .ai-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        
+        @media (max-width: 480px) {
+            .survey-container {
+                padding: 0.5rem;
+            }
+            
+            .question-container {
+                padding: 1.5rem 1rem;
+            }
+            
+            .answer-option {
+                padding: 0.75rem;
+            }
+            
+            .rating-scale {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .rating-option {
+                min-width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="survey-player">
+        <div class="survey-container">
+            <!-- Conversation Header -->
+            <div class="conversation-header">
+                <div class="ai-avatar-header">
+                    <div class="ai-avatar-small">🤖</div>
+                    <div>
+                        <div class="ai-name">SurveyAI Assistant</div>
+                        <div class="ai-status">
+                            <div class="status-dot"></div>
+                            <span>Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conversation Container -->
+            <div class="conversation-container">
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Messages will be dynamically added here -->
+                </div>
+
+                <!-- Current Question -->
+                <div class="question-container" id="currentQuestion" style="display: none;">
+                    <!-- Question will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        let totalQuestions = 5;
+        let selectedAnswer = null;
+        let conversationHistory = [];
+
+        // Question data with AI-generated responses
+        const questions = [
+            {
+                id: 1,
+                text: "How satisfied are you with our service?",
+                type: "single-choice",
+                options: ["Very Satisfied", "Satisfied", "Neutral", "Dissatisfied", "Very Dissatisfied"],
+                aiIntro: "Let's start with the first question - this will help me understand how you feel about our service overall.",
+                aiResponses: {
+                    "Very Satisfied": "That's fantastic to hear! 😊 It sounds like we're really meeting your expectations. I'm curious to learn more about what's working well for you.",
+                    "Satisfied": "Great! I'm glad you're having a positive experience with our service. Your feedback helps us understand what we're doing right.",
+                    "Neutral": "I appreciate your honest feedback. It's helpful to know when things are just okay - this gives us room to improve and make your experience even better.",
+                    "Dissatisfied": "I'm sorry to hear that your experience hasn't been what you expected. Your feedback is really valuable to us, and I'd love to understand what we can do better.",
+                    "Very Dissatisfied": "I'm really sorry that your experience wasn't what you deserved. We take this seriously and want to make things right. Your honest feedback helps us identify exactly what went wrong."
+                }
+            },
+            {
+                id: 2,
+                text: "Which features do you use most often?",
+                type: "multiple-choice",
+                options: ["Mobile App", "Web Dashboard", "Email Notifications", "API Integration", "Customer Support"],
+                aiIntro: "Perfect! Now I'd like to know which features you find most useful. You can select multiple options - there's no limit to how many you can choose.",
+                aiResponses: {
+                    "Mobile App": "The mobile app is definitely popular! It's great to see people using it on the go. What do you like most about the mobile experience?",
+                    "Web Dashboard": "The web dashboard is a powerful tool! I'm glad you're finding it useful for your daily tasks.",
+                    "Email Notifications": "Email notifications help keep you in the loop! It's good to know you're staying updated with our communications.",
+                    "API Integration": "API integration shows you're a power user! That's really impressive - you must be doing some advanced work with our platform.",
+                    "Customer Support": "Customer support is there when you need it! I'm glad you've had positive interactions with our team."
+                }
+            },
+            {
+                id: 3,
+                text: "How likely are you to recommend us to a friend?",
+                type: "nps",
+                options: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                aiIntro: "This is a really important question for us. On a scale of 0 to 10, how likely would you be to recommend our service to a friend or colleague? 0 means not at all likely, and 10 means extremely likely.",
+                aiResponses: {
+                    "9-10": "Wow, that's amazing! 🎉 You're a true advocate for our service. We're so grateful for your support and trust in us.",
+                    "7-8": "That's really encouraging! It sounds like you're quite happy with our service and would be comfortable recommending us to others.",
+                    "5-6": "I appreciate your honest feedback. It seems like we're doing okay, but there's definitely room for us to improve and earn a higher recommendation from you.",
+                    "3-4": "Thank you for being honest. It's clear we have some work to do to earn your full confidence, and your feedback will help us get there.",
+                    "0-2": "I really appreciate your honesty. It's clear we haven't met your expectations, and we need to do better. Your feedback is crucial for us to improve."
+                }
+            },
+            {
+                id: 4,
+                text: "What could we improve to better serve you?",
+                type: "open-text",
+                aiIntro: "I'd love to hear your thoughts on how we can improve. Please share any suggestions, feedback, or ideas you have - no matter how big or small. Your input is incredibly valuable to us.",
+                aiResponses: {
+                    "default": "Thank you for taking the time to share that with me. Your suggestions are really helpful, and I can see you've put thought into this. We'll definitely take your feedback seriously."
+                }
+            },
+            {
+                id: 5,
+                text: "Rate your overall experience",
+                type: "star-rating",
+                options: [1, 2, 3, 4, 5],
+                aiIntro: "Finally, let's wrap up with a quick rating. How would you rate your overall experience with us? Just tap the stars to rate us from 1 to 5.",
+                aiResponses: {
+                    "5": "Five stars! 🌟 That's incredible! Thank you so much for the amazing rating. It means the world to us that you've had such a positive experience.",
+                    "4": "Four stars is fantastic! ⭐ Thank you for the great rating. It's wonderful to know you're having a positive experience with our service.",
+                    "3": "Three stars - I appreciate your honest feedback. It's helpful to know we're on the right track but still have room to improve.",
+                    "2": "Two stars - thank you for being honest. It's clear we need to do better, and your feedback will help us improve your experience.",
+                    "1": "One star - I'm really sorry we haven't met your expectations. We take this seriously and will use your feedback to make significant improvements."
+                }
+            }
+        ];
+
+        // Initialize the survey
+        document.addEventListener('DOMContentLoaded', function() {
+            // Start the conversation with welcome message
+            setTimeout(() => {
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addAIMessage("Hi there! 👋 I'm your AI assistant, and I'll be guiding you through this quick survey about your experience with our service.");
+                    
+                    // Show readiness choice after welcome message
+                    setTimeout(() => {
+                        showTypingIndicator();
+                        setTimeout(() => {
+                            hideTypingIndicator();
+                            showReadinessChoice();
+                        }, 2000);
+                    }, 2000);
+                }, 2000);
+            }, 1000);
+        });
+
+        // Show readiness choice
+        function showReadinessChoice() {
+            addAIMessage("Don't worry, this will only take about 3-5 minutes of your time. I'll ask you a few questions, and you can answer them at your own pace. Are you ready to get started? 😊");
+            
+            // Show readiness choice after a brief delay
+            setTimeout(() => {
+                const questionContainer = document.getElementById('currentQuestion');
+                questionContainer.innerHTML = `
+                    <div class="question-text">Are you ready to start the survey?</div>
+                    <div class="answer-options">
+                        <div class="answer-option" onclick="selectReadiness('ready')">
+                            <input type="radio" name="readiness" id="ready">
+                            <label for="ready">Yes, I'm ready! 🚀</label>
+                        </div>
+                        <div class="answer-option" onclick="selectReadiness('not-ready')">
+                            <input type="radio" name="readiness" id="not-ready">
+                            <label for="not-ready">Not ready at the moment 😔</label>
+                        </div>
+                    </div>
+                `;
+                questionContainer.style.display = 'block';
+                questionContainer.scrollIntoView({ behavior: 'smooth' });
+            }, 1000);
+        }
+
+        // Handle readiness choice
+        function selectReadiness(choice) {
+            // Prevent multiple clicks
+            if (window.readinessSelected) {
+                return;
+            }
+            window.readinessSelected = true;
+            
+            // Remove selected class from all options
+            document.querySelectorAll('.answer-option').forEach(opt => opt.classList.remove('selected'));
+            // Add selected class to clicked option
+            event.target.closest('.answer-option').classList.add('selected');
+            
+            // Check the radio button
+            const radio = event.target.closest('.answer-option').querySelector('input[type="radio"]');
+            radio.checked = true;
+            
+            if (choice === 'ready') {
+                addUserMessage("Yes, I'm ready! 🚀");
+                
+                // Hide current question
+                const questionContainer = document.getElementById('currentQuestion');
+                questionContainer.style.display = 'none';
+                
+                // Show typing indicator
+                showTypingIndicator();
+                
+                // Start the survey
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addAIMessage("Fantastic! Let's get started then. I'll guide you through each question step by step.");
+                    
+                    // Show first question after a brief delay
+                    setTimeout(() => {
+                        showQuestion(0);
+                    }, 1500);
+                }, 1500);
+            } else {
+                addUserMessage("Not ready at the moment 😔");
+                
+                // Hide current question
+                const questionContainer = document.getElementById('currentQuestion');
+                questionContainer.style.display = 'none';
+                
+                // Show typing indicator
+                showTypingIndicator();
+                
+                // Handle not ready response
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addAIMessage("No problem at all! I completely understand. Sometimes we need a moment to gather our thoughts.");
+                    
+                    setTimeout(() => {
+                        addAIMessage("When you're ready, just refresh this page and we can start fresh. Take your time! 😊");
+                    }, 2000);
+                }, 1500);
+            }
+        }
+
+        // Show question with AI intro
+        function showQuestion(questionIndex) {
+            const question = questions[questionIndex];
+            
+            // Add AI intro message
+            addAIMessage(question.aiIntro);
+            
+            // Show question after a brief delay
+            setTimeout(() => {
+                const questionContainer = document.getElementById('currentQuestion');
+                questionContainer.innerHTML = generateQuestionHTML(question);
+                questionContainer.style.display = 'block';
+                questionContainer.scrollIntoView({ behavior: 'smooth' });
+            }, 1000);
+        }
+
+        // Select answer and continue conversation
+        function selectAnswer(element, answer) {
+            // Prevent multiple clicks
+            if (window.answerSelected) {
+                return;
+            }
+            window.answerSelected = true;
+            
+            // Remove selected class from all options
+            document.querySelectorAll('.answer-option').forEach(opt => opt.classList.remove('selected'));
+            // Add selected class to clicked option
+            element.classList.add('selected');
+            // Check the radio button
+            const radio = element.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+            }
+
+            selectedAnswer = answer;
+            
+            // Add user response to chat
+            addUserMessage(answer);
+            
+            // Hide current question
+            const questionContainer = document.getElementById('currentQuestion');
+            questionContainer.style.display = 'none';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Process answer and move to next question
+            setTimeout(() => {
+                hideTypingIndicator();
+                processAnswer(answer);
+            }, 1500);
+        }
+
+        // Process user answer and continue conversation
+        function processAnswer(answer) {
+            conversationHistory.push({
+                question: questions[currentQuestion - 1].text,
+                answer: answer,
+                timestamp: new Date()
+            });
+
+            // Get AI response based on answer
+            const aiResponse = getAIResponse(answer, currentQuestion - 1);
+            addAIMessage(aiResponse);
+
+            // Move to next question or finish
+            if (currentQuestion < totalQuestions) {
+                setTimeout(() => {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        hideTypingIndicator();
+                        nextQuestion();
+                    }, 2000);
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        hideTypingIndicator();
+                        finishSurvey();
+                    }, 2000);
+                }, 1000);
+            }
+        }
+
+        // Get AI response based on answer and question
+        function getAIResponse(answer, questionIndex) {
+            const question = questions[questionIndex];
+            const responses = question.aiResponses;
+            
+            if (question.type === 'nps') {
+                const score = parseInt(answer);
+                if (score >= 9) return responses["9-10"];
+                if (score >= 7) return responses["7-8"];
+                if (score >= 5) return responses["5-6"];
+                if (score >= 3) return responses["3-4"];
+                return responses["0-2"];
+            } else if (question.type === 'star-rating') {
+                const rating = parseInt(answer);
+                return responses[rating.toString()];
+            } else if (question.type === 'open-text') {
+                return responses["default"];
+            } else if (question.type === 'multiple-choice') {
+                // For multiple choice, we'll handle it differently
+                return "Thanks for sharing that! It's helpful to know which features you find most useful.";
+            } else {
+                // Single choice
+                return responses[answer] || "Thank you for your feedback!";
+            }
+        }
+
+        // Move to next question
+        function nextQuestion() {
+            currentQuestion++;
+            // Reset answer selection flag for next question
+            window.answerSelected = false;
+            showQuestion(currentQuestion - 1);
+        }
+
+        // Generate question HTML based on type
+        function generateQuestionHTML(question) {
+            let optionsHTML = '';
+            
+            if (question.type === 'single-choice') {
+                question.options.forEach((option, index) => {
+                    optionsHTML += `
+                        <div class="answer-option" onclick="selectAnswer(this, '${option}')">
+                            <input type="radio" name="question${question.id}" id="option${index}">
+                            <label for="option${index}">${option}</label>
+                        </div>
+                    `;
+                });
+            } else if (question.type === 'multiple-choice') {
+                question.options.forEach((option, index) => {
+                    optionsHTML += `
+                        <div class="answer-option" onclick="selectMultipleAnswer(this, '${option}')">
+                            <input type="checkbox" name="question${question.id}" id="option${index}">
+                            <label for="option${index}">${option}</label>
+                        </div>
+                    `;
+                });
+                optionsHTML += `
+                    <button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="submitMultipleChoice()">Submit Selection</button>
+                `;
+            } else if (question.type === 'nps') {
+                optionsHTML = `
+                    <div class="rating-mobile">
+                        <span style="font-size: 0.75rem; color: var(--text-secondary);">Not likely</span>
+                        <div style="display: flex; gap: 0.25rem;">
+                            ${question.options.map((num, index) => `
+                                <div class="rating-option-mobile" onclick="selectNPSAnswer(${num})">
+                                    <div class="rating-number-mobile">${num}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <span style="font-size: 0.75rem; color: var(--text-secondary);">Extremely likely</span>
+                    </div>
+                `;
+            } else if (question.type === 'open-text') {
+                optionsHTML = `
+                    <textarea style="width: 100%; min-height: 100px; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius); font-size: 0.875rem;" placeholder="Please share your thoughts..." id="textAnswer"></textarea>
+                    <button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="submitTextAnswer()">Submit Answer</button>
+                `;
+            } else if (question.type === 'star-rating') {
+                optionsHTML = `
+                    <div class="star-rating" id="starRating">
+                        ${question.options.map((num, index) => `
+                            <span class="star" onclick="selectStarRating(${num})">★</span>
+                        `).join('')}
+                    </div>
+                    <div style="text-align: center; margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);" id="starText">Tap to rate</div>
+                `;
+            }
+
+            return `
+                <div class="question-text">${question.text}</div>
+                <div class="answer-options">${optionsHTML}</div>
+            `;
+        }
+
+        // Handle multiple choice answers
+        function selectMultipleAnswer(element, answer) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            
+            if (checkbox.checked) {
+                element.classList.add('selected');
+            } else {
+                element.classList.remove('selected');
+            }
+        }
+
+        // Submit multiple choice answers
+        function submitMultipleChoice() {
+            const selectedOptions = document.querySelectorAll('.answer-option.selected');
+            if (selectedOptions.length === 0) {
+                alert('Please select at least one option.');
+                return;
+            }
+            
+            const answers = Array.from(selectedOptions).map(opt => 
+                opt.querySelector('label').textContent
+            );
+            
+            selectedAnswer = answers.join(', ');
+            addUserMessage(`I use: ${selectedAnswer}`);
+            
+            // Hide current question
+            const questionContainer = document.getElementById('currentQuestion');
+            questionContainer.style.display = 'none';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Process answer
+            setTimeout(() => {
+                hideTypingIndicator();
+                processAnswer(selectedAnswer);
+            }, 1500);
+        }
+
+        // Handle NPS answers
+        function selectNPSAnswer(score) {
+            // Prevent multiple clicks
+            if (window.answerSelected) {
+                return;
+            }
+            window.answerSelected = true;
+            
+            document.querySelectorAll('.rating-option-mobile').forEach(opt => opt.classList.remove('selected'));
+            event.target.closest('.rating-option-mobile').classList.add('selected');
+            selectedAnswer = score;
+            
+            addUserMessage(`I would rate it ${score} out of 10`);
+            showTypingIndicator();
+            
+            setTimeout(() => {
+                hideTypingIndicator();
+                processAnswer(score.toString());
+            }, 1500);
+        }
+
+        // Handle text answers
+        function submitTextAnswer() {
+            // Prevent multiple clicks
+            if (window.answerSelected) {
+                return;
+            }
+            window.answerSelected = true;
+            
+            const textAnswer = document.getElementById('textAnswer').value;
+            if (textAnswer.trim()) {
+                selectedAnswer = textAnswer;
+                addUserMessage(textAnswer);
+                showTypingIndicator();
+                
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    processAnswer(textAnswer);
+                }, 1500);
+            }
+        }
+
+        // Handle star rating
+        function selectStarRating(rating) {
+            // Prevent multiple clicks
+            if (window.answerSelected) {
+                return;
+            }
+            window.answerSelected = true;
+            
+            const stars = document.querySelectorAll('#starRating .star');
+            const starText = document.getElementById('starText');
+            
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+            
+            selectedAnswer = rating;
+            starText.textContent = `${rating} out of 5 stars`;
+            
+            addUserMessage(`I would rate it ${rating} out of 5 stars`);
+            showTypingIndicator();
+            
+            setTimeout(() => {
+                hideTypingIndicator();
+                processAnswer(rating.toString());
+            }, 1500);
+        }
+
+        // Finish survey
+        function finishSurvey() {
+            addAIMessage("Thank you so much for taking the time to complete this survey! 🙏 Your feedback is incredibly valuable to us and will help us improve our service.");
+            
+            setTimeout(() => {
+                addAIMessage("We really appreciate your input, and we'll use it to make our service even better for you and other customers. Have a great day! 😊");
+                
+                // Show restart option after completion
+                setTimeout(() => {
+                    addAIMessage("Would you like to take the survey again or try a different survey? Just let me know!");
+                    
+                    setTimeout(() => {
+                        const questionContainer = document.getElementById('currentQuestion');
+                        questionContainer.innerHTML = `
+                            <div class="question-text">What would you like to do next?</div>
+                            <div class="answer-options">
+                                <div class="answer-option" onclick="restartSurvey()">
+                                    <input type="radio" name="next-action" id="restart">
+                                    <label for="restart">Take this survey again 🔄</label>
+                                </div>
+                                <div class="answer-option" onclick="showOtherSurveys()">
+                                    <input type="radio" name="next-action" id="other-surveys">
+                                    <label for="other-surveys">View other surveys 📋</label>
+                                </div>
+                                <div class="answer-option" onclick="endSession()">
+                                    <input type="radio" name="next-action" id="end">
+                                    <label for="end">End session 👋</label>
+                                </div>
+                            </div>
+                        `;
+                        questionContainer.style.display = 'block';
+                        questionContainer.scrollIntoView({ behavior: 'smooth' });
+                    }, 1000);
+                }, 2000);
+            }, 2000);
+        }
+
+        // Restart survey
+        function restartSurvey() {
+            // Reset variables
+            currentQuestion = 1;
+            selectedAnswer = null;
+            conversationHistory = [];
+            
+            // Reset flags
+            window.readinessSelected = false;
+            window.answerSelected = false;
+            
+            // Clear chat messages
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = '';
+            
+            // Hide current question
+            const questionContainer = document.getElementById('currentQuestion');
+            questionContainer.style.display = 'none';
+            
+            // Start fresh
+            addUserMessage("Take this survey again 🔄");
+            
+            setTimeout(() => {
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addAIMessage("Great! Let's start fresh. I'll guide you through the survey again.");
+                    
+                    setTimeout(() => {
+                        showQuestion(0);
+                    }, 1500);
+                }, 1500);
+            }, 1000);
+        }
+
+        // Show other surveys
+        function showOtherSurveys() {
+            addUserMessage("View other surveys 📋");
+            
+            const questionContainer = document.getElementById('currentQuestion');
+            questionContainer.style.display = 'none';
+            
+            setTimeout(() => {
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addAIMessage("I'd love to show you other surveys, but this is just a demo! In the full version, you'd see a list of available surveys here.");
+                    
+                    setTimeout(() => {
+                        addAIMessage("For now, would you like to take this survey again or end the session?");
+                        
+                        setTimeout(() => {
+                            const questionContainer = document.getElementById('currentQuestion');
+                            questionContainer.innerHTML = `
+                                <div class="question-text">What would you like to do?</div>
+                                <div class="answer-options">
+                                    <div class="answer-option" onclick="restartSurvey()">
+                                        <input type="radio" name="demo-action" id="demo-restart">
+                                        <label for="demo-restart">Take this survey again 🔄</label>
+                                    </div>
+                                    <div class="answer-option" onclick="endSession()">
+                                        <input type="radio" name="demo-action" id="demo-end">
+                                        <label for="demo-end">End session 👋</label>
+                                    </div>
+                                </div>
+                            `;
+                            questionContainer.style.display = 'block';
+                            questionContainer.scrollIntoView({ behavior: 'smooth' });
+                        }, 1000);
+                    }, 2000);
+                }, 1500);
+            }, 1000);
+        }
+
+        // End session
+        function endSession() {
+            addUserMessage("End session 👋");
+            
+            const questionContainer = document.getElementById('currentQuestion');
+            questionContainer.style.display = 'none';
+            
+            setTimeout(() => {
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addAIMessage("Thank you for your time! It was great chatting with you. Take care! 😊");
+                }, 1500);
+            }, 1000);
+        }
+
+        // Add AI message to chat
+        function addAIMessage(text) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai';
+            messageDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <div>${text}</div>
+                    <div class="message-time">Just now</div>
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Add user message to chat
+        function addUserMessage(text) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user';
+            messageDiv.innerHTML = `
+                <div class="message-avatar">👤</div>
+                <div class="message-content">
+                    <div>${text}</div>
+                    <div class="message-time">Just now</div>
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Hide typing indicator
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+    </script>
+</body>
+</html>
