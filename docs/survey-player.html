@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Satisfaction Survey - AI Assistant</title>
+    <title>Crew Satisfaction Survey - AI Assistant</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Mobile-first conversational survey player styles */
@@ -431,7 +431,7 @@
                 <div class="ai-avatar-header">
                     <div class="ai-avatar-small">🤖</div>
                     <div>
-                        <div class="ai-name">SurveyAI Assistant</div>
+                        <div class="ai-name">AI Assistant</div>
                         <div class="ai-status">
                             <div class="status-dot"></div>
                             <span>Online</span>
@@ -456,7 +456,7 @@
 
     <script>
         let currentQuestion = 1;
-        let totalQuestions = 5;
+        let totalQuestions = 6;
         let selectedAnswer = null;
         let conversationHistory = [];
 
@@ -464,67 +464,116 @@
         const questions = [
             {
                 id: 1,
-                text: "How satisfied are you with our service?",
-                type: "single-choice",
-                options: ["Very Satisfied", "Satisfied", "Neutral", "Dissatisfied", "Very Dissatisfied"],
-                aiIntro: "Let's start with the first question - this will help me understand how you feel about our service overall.",
+                text: "How easy was it to find your travel itinerary in the app? (1=hard, 5=easy)",
+                type: "star-rating",
+                options: [1, 2, 3, 4, 5],
+                aiIntro: "Hi Isabel! I'd like to do a quick check on your travel & onboarding experience. It takes about 2 minutes. Ready?",
                 aiResponses: {
-                    "Very Satisfied": "That's fantastic to hear! 😊 It sounds like we're really meeting your expectations. I'm curious to learn more about what's working well for you.",
-                    "Satisfied": "Great! I'm glad you're having a positive experience with our service. Your feedback helps us understand what we're doing right.",
-                    "Neutral": "I appreciate your honest feedback. It's helpful to know when things are just okay - this gives us room to improve and make your experience even better.",
-                    "Dissatisfied": "I'm sorry to hear that your experience hasn't been what you expected. Your feedback is really valuable to us, and I'd love to understand what we can do better.",
-                    "Very Dissatisfied": "I'm really sorry that your experience wasn't what you deserved. We take this seriously and want to make things right. Your honest feedback helps us identify exactly what went wrong."
+                    "5": "That's great, Isabel! I'm glad the itinerary was easy to find for you.",
+                    "4": "Good to hear, Isabel! We're always working to make things even clearer.",
+                    "3": "Thanks for the feedback, Isabel. I'll make sure to pass this along to our team.",
+                    "2": "Thanks for telling me, Isabel. What made it hard?",
+                    "1": "I'm sorry to hear that, Isabel. What made it difficult to find?"
+                },
+                followUp: {
+                    condition: 'rating <= 2',
+                    question: "What made it hard?",
+                    options: [
+                        "I couldn't find the itinerary section",
+                        "Details were missing or arrived late", 
+                        "App was slow or crashed",
+                        "Other (type freely)"
+                    ],
+                    aiResponse: "Thanks for letting me know, Isabel. Would a push notification when your itinerary updates help next time?",
+                    finalResponse: "Perfect, Isabel! I'll make sure we set up push notifications for your itinerary updates.",
+                    finalResponseNo: "I understand, Isabel. We'll work on making the itinerary section more visible in the app instead."
                 }
             },
             {
                 id: 2,
-                text: "Which features do you use most often?",
-                type: "multiple-choice",
-                options: ["Mobile App", "Web Dashboard", "Email Notifications", "API Integration", "Customer Support"],
-                aiIntro: "Perfect! Now I'd like to know which features you find most useful. You can select multiple options - there's no limit to how many you can choose.",
+                text: "Did you have any airport pickup/shuttle issues?",
+                type: "yes-no",
+                aiIntro: "Now let's talk about your airport experience.",
                 aiResponses: {
-                    "Mobile App": "The mobile app is definitely popular! It's great to see people using it on the go. What do you like most about the mobile experience?",
-                    "Web Dashboard": "The web dashboard is a powerful tool! I'm glad you're finding it useful for your daily tasks.",
-                    "Email Notifications": "Email notifications help keep you in the loop! It's good to know you're staying updated with our communications.",
-                    "API Integration": "API integration shows you're a power user! That's really impressive - you must be doing some advanced work with our platform.",
-                    "Customer Support": "Customer support is there when you need it! I'm glad you've had positive interactions with our team."
+                    "Yes": "I understand, Isabel. What happened?",
+                    "No": "That's great, Isabel! I'm glad your pickup went smoothly."
+                },
+                followUp: {
+                    condition: 'answer === "Yes"',
+                    question: "What happened?",
+                    options: [
+                        "A) Couldn't find the greeter",
+                        "B) Driver was late", 
+                        "C) QR scan didn't work",
+                        "D) Other (type freely)"
+                    ],
+                    aiResponse: "Thanks for letting me know, Isabel.",
+                    finalResponse: "Excellent, Isabel! I'll make sure we add that feature to help you find the meeting point more easily.",
+                    finalResponseNo: "I understand, Isabel. We'll focus on improving the greeter visibility and signage at the airport instead."
                 }
             },
             {
                 id: 3,
-                text: "How likely are you to recommend us to a friend?",
-                type: "nps",
-                options: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                aiIntro: "This is a really important question for us. On a scale of 0 to 10, how likely would you be to recommend our service to a friend or colleague? 0 means not at all likely, and 10 means extremely likely.",
+                text: "How was document upload (passport/visa/medical)? Tell us in your words.",
+                type: "open-text",
+                aiIntro: "Now let's talk about your document upload experience.",
                 aiResponses: {
-                    "9-10": "Wow, that's amazing! 🎉 You're a true advocate for our service. We're so grateful for your support and trust in us.",
-                    "7-8": "That's really encouraging! It sounds like you're quite happy with our service and would be comfortable recommending us to others.",
-                    "5-6": "I appreciate your honest feedback. It seems like we're doing okay, but there's definitely room for us to improve and earn a higher recommendation from you.",
-                    "3-4": "Thank you for being honest. It's clear we have some work to do to earn your full confidence, and your feedback will help us get there.",
-                    "0-2": "I really appreciate your honesty. It's clear we haven't met your expectations, and we need to do better. Your feedback is crucial for us to improve."
+                    "positive": "That's great, Isabel! I'm glad the document upload went smoothly for you.",
+                    "negative": "Sorry for the confusion, Isabel."
+                },
+                followUp: {
+                    condition: 'sentiment === "negative"',
+                    question: "Would a progress bar (\"Received → Processing → Verified\") help?",
+                    options: [
+                        "Yes",
+                        "No"
+                    ],
+                    aiResponse: "Thanks for your feedback, Isabel.",
+                    finalResponse: "Perfect, Isabel! I'll make sure we add that progress bar feature to help you track your document status.",
+                    finalResponseNo: "I understand, Isabel. We'll work on other ways to improve the document upload experience."
                 }
             },
             {
                 id: 4,
-                text: "What could we improve to better serve you?",
-                type: "open-text",
-                aiIntro: "I'd love to hear your thoughts on how we can improve. Please share any suggestions, feedback, or ideas you have - no matter how big or small. Your input is incredibly valuable to us.",
+                text: "How confident are you that you know your next steps? (1–5)",
+                type: "star-rating",
+                options: [1, 2, 3, 4, 5],
+                aiIntro: "Now I'd like to know about your next steps clarity.",
                 aiResponses: {
-                    "default": "Thank you for taking the time to share that with me. Your suggestions are really helpful, and I can see you've put thought into this. We'll definitely take your feedback seriously."
+                    "5": "Excellent, Isabel! I'm glad everything is clear for you.",
+                    "4": "That's good, Isabel! I'm here if you need any clarification.",
+                    "3": "Thanks for the feedback, Isabel. I'll work on making things clearer for you.",
+                    "2": "I understand you need more clarity, Isabel.",
+                    "1": "I can see this is confusing for you, Isabel."
+                },
+                followUp: {
+                    condition: 'rating <= 2',
+                    question: "What would help the most?",
+                    options: [
+                        "One checklist with due dates",
+                        "Reminders in my local time",
+                        "Chat with a human",
+                        "Other"
+                    ],
+                    aiResponse: "Thanks for letting me know what would help, Isabel!"
                 }
             },
             {
                 id: 5,
-                text: "Rate your overall experience",
-                type: "star-rating",
-                options: [1, 2, 3, 4, 5],
-                aiIntro: "Finally, let's wrap up with a quick rating. How would you rate your overall experience with us? Just tap the stars to rate us from 1 to 5.",
+                text: "How should we send important updates?",
+                type: "open-text",
+                aiIntro: "Let's talk about communication preferences.",
                 aiResponses: {
-                    "5": "Five stars! 🌟 That's incredible! Thank you so much for the amazing rating. It means the world to us that you've had such a positive experience.",
-                    "4": "Four stars is fantastic! ⭐ Thank you for the great rating. It's wonderful to know you're having a positive experience with our service.",
-                    "3": "Three stars - I appreciate your honest feedback. It's helpful to know we're on the right track but still have room to improve.",
-                    "2": "Two stars - thank you for being honest. It's clear we need to do better, and your feedback will help us improve your experience.",
-                    "1": "One star - I'm really sorry we haven't met your expectations. We take this seriously and will use your feedback to make significant improvements."
+                    "default": "Perfect, Isabel! I'll make sure we use your preferred channels for updates."
+                }
+            },
+            {
+                id: 6,
+                text: "Anything else we should change first?",
+                type: "open-text",
+                aiIntro: "Finally, Isabel, is there anything else I should know?",
+                aiResponses: {
+                    "default": "Salamat, Isabel! Buod: mapa sa meeting point, mga notification ng itinerary at mas mabilis na verification ng documents. Gagamitin namin ito para mapabuti ang susunod mong biyahe. ✅"
                 }
             }
         ];
@@ -536,7 +585,7 @@
                 showTypingIndicator();
                 setTimeout(() => {
                     hideTypingIndicator();
-                    addAIMessage("Hi there! 👋 I'm your AI assistant, and I'll be guiding you through this quick survey about your experience with our service.");
+                    addAIMessage("Hi Isabel! 👋 I'm your AI assistant, and I'll be guiding you through this quick survey about your travel & onboarding experience.");
                     
                     // Show readiness choice after welcome message
                     setTimeout(() => {
@@ -552,7 +601,7 @@
 
         // Show readiness choice
         function showReadinessChoice() {
-            addAIMessage("Don't worry, this will only take about 3-5 minutes of your time. I'll ask you a few questions, and you can answer them at your own pace. Are you ready to get started? 😊");
+                        addAIMessage("Don't worry, this will only take about 2 minutes of your time. I'll ask you a few questions about your travel experience, and you can answer them at your own pace. Are you ready to get started? 😊");
             
             // Show readiness choice after a brief delay
             setTimeout(() => {
@@ -689,34 +738,610 @@
 
         // Process user answer and continue conversation
         function processAnswer(answer) {
+            console.log('processAnswer called with:', answer);
+            console.log('Current question:', currentQuestion);
+            console.log('Question type:', questions[currentQuestion - 1].type);
+            
             conversationHistory.push({
                 question: questions[currentQuestion - 1].text,
                 answer: answer,
                 timestamp: new Date()
             });
 
+            // Simulate data collection and AI processing
+            simulateDataCollection(answer, currentQuestion - 1);
+
             // Get AI response based on answer
             const aiResponse = getAIResponse(answer, currentQuestion - 1);
             addAIMessage(aiResponse);
 
-            // Move to next question or finish
-            if (currentQuestion < totalQuestions) {
-                setTimeout(() => {
-                    showTypingIndicator();
+            // Check if there's a follow-up question
+            const currentQ = questions[currentQuestion - 1];
+            console.log('Checking for follow-up question:', currentQ.followUp);
+            
+            // Special handling for pickup question - only show follow-up for "Yes"
+            if (currentQ.id === 2 && answer === "No") {
+                console.log('Pickup question with No answer - no follow-up');
+                // Move to next question or finish
+                if (currentQuestion < totalQuestions) {
                     setTimeout(() => {
-                        hideTypingIndicator();
-                        nextQuestion();
-                    }, 2000);
-                }, 1000);
+                        showTypingIndicator();
+                        setTimeout(() => {
+                            hideTypingIndicator();
+                            nextQuestion();
+                        }, 2000);
+                    }, 1000);
+                } else {
+                    setTimeout(() => {
+                        showTypingIndicator();
+                        setTimeout(() => {
+                            hideTypingIndicator();
+                            finishSurvey();
+                        }, 2000);
+                    }, 1000);
+                }
+            } else if (currentQ.followUp && shouldShowFollowUp(answer, currentQ.followUp)) {
+                console.log('Follow-up question will be shown');
+                setTimeout(() => {
+                    showFollowUpQuestion(currentQ.followUp);
+                }, 1500);
+            } else if (currentQ.type === 'open-text' && currentQ.followUp && currentQ.followUp.condition === 'sentiment === "negative"') {
+                console.log('Matched sentiment condition for question', currentQ.id);
+                // Check sentiment for open-text questions with sentiment-based follow-up
+                console.log('Checking sentiment for question', currentQ.id, 'with answer:', answer);
+                const sentiment = analyzeSentiment(answer);
+                console.log('Document upload sentiment:', sentiment);
+                console.log('Follow-up condition:', currentQ.followUp.condition);
+                if (sentiment === 'negative') {
+                    console.log('Negative sentiment detected, showing progress bar question');
+                    setTimeout(() => {
+                        showProgressBarQuestion();
+                    }, 1500);
+                } else {
+                    console.log('Positive sentiment, no follow-up needed');
+                    // Move to next question or finish
+                    if (currentQuestion < totalQuestions) {
+                        setTimeout(() => {
+                            showTypingIndicator();
+                            setTimeout(() => {
+                                hideTypingIndicator();
+                                nextQuestion();
+                            }, 2000);
+                        }, 1000);
+                    } else {
+                        setTimeout(() => {
+                            showTypingIndicator();
+                            setTimeout(() => {
+                                hideTypingIndicator();
+                                finishSurvey();
+                            }, 2000);
+                        }, 1000);
+                    }
+                }
             } else {
-                setTimeout(() => {
-                    showTypingIndicator();
+                console.log('No follow-up question, proceeding to next question');
+                console.log('Current question:', currentQuestion, 'Total questions:', totalQuestions);
+                // Move to next question or finish
+                if (currentQuestion < totalQuestions) {
+                    console.log('Moving to next question');
                     setTimeout(() => {
-                        hideTypingIndicator();
-                        finishSurvey();
-                    }, 2000);
-                }, 1000);
+                        showTypingIndicator();
+                        setTimeout(() => {
+                            hideTypingIndicator();
+                            nextQuestion();
+                        }, 2000);
+                    }, 1000);
+                } else {
+                    console.log('Finishing survey');
+                    setTimeout(() => {
+                        showTypingIndicator();
+                        setTimeout(() => {
+                            hideTypingIndicator();
+                            finishSurvey();
+                        }, 2000);
+                    }, 1000);
+                }
             }
+        }
+
+        function shouldShowFollowUp(answer, followUp) {
+            console.log('shouldShowFollowUp called with:', answer, followUp);
+            if (followUp.condition === 'rating <= 2') {
+                const result = parseInt(answer) <= 2;
+                console.log('Rating condition result:', result);
+                return result;
+            } else if (followUp.condition === 'answer === "Yes"') {
+                const result = answer === 'Yes';
+                console.log('Yes condition result:', result);
+                return result;
+            }
+            console.log('No condition matched, returning false');
+            return false;
+        }
+
+        function showFollowUpQuestion(followUp) {
+            console.log('showFollowUpQuestion called with:', followUp);
+            console.log('Current window.followUpSelected before reset:', window.followUpSelected);
+            // Reset the follow-up selected flag
+            window.followUpSelected = false;
+            console.log('Reset window.followUpSelected to false');
+            
+            showTypingIndicator();
+            setTimeout(() => {
+                hideTypingIndicator();
+                addAIMessage(followUp.question);
+                
+                // Generate follow-up question HTML
+                const followUpHTML = `
+                    <div class="question-container" id="followUpQuestion">
+                        <div class="answer-options">
+                            ${followUp.options.map((option, index) => `
+                                <div class="answer-option" data-option="${option}">
+                                    <input type="radio" name="followUp" id="followUp${index}" value="${option}">
+                                    <label for="followUp${index}">${option}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                console.log('Generated follow-up HTML:', followUpHTML);
+                document.getElementById('currentQuestion').innerHTML = followUpHTML;
+                document.getElementById('currentQuestion').style.display = 'block';
+                
+                // Add event listeners to follow-up options
+                const followUpOptions = document.querySelectorAll('#followUpQuestion .answer-option');
+                followUpOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const selectedOption = this.getAttribute('data-option');
+                        console.log('Follow-up option clicked:', selectedOption);
+                        selectFollowUpAnswer(this, selectedOption);
+                    });
+                });
+                
+                console.log('Follow-up question displayed with event listeners');
+            }, 1000);
+        }
+
+        function selectFollowUpAnswer(element, answer) {
+            console.log('selectFollowUpAnswer called with:', answer);
+            console.log('window.followUpSelected:', window.followUpSelected);
+            console.log('Element clicked:', element);
+            
+            if (window.followUpSelected) {
+                console.log('Follow-up already selected, returning');
+                return;
+            }
+            window.followUpSelected = true;
+            console.log('Set window.followUpSelected to true');
+            
+            // Visual feedback for selection
+            const radio = element.querySelector('input[type="radio"]');
+            radio.checked = true;
+            element.classList.add('selected');
+            
+            // Check if it's "Other (type freely)" option
+            if (answer === "D) Other (type freely)" || answer === "Other (type freely)") {
+                // Show text input for free text response
+                showFreeTextInput();
+                return;
+            }
+            
+            // Add user message
+            addUserMessage(answer);
+            
+            // Hide follow-up question
+            document.getElementById('currentQuestion').style.display = 'none';
+            
+            // Process follow-up answer
+            conversationHistory.push({
+                question: "Follow-up: " + questions[currentQuestion - 1].followUp.question,
+                answer: answer,
+                timestamp: new Date()
+            });
+            
+            // Show AI response to follow-up
+            setTimeout(() => {
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    addAIMessage(questions[currentQuestion - 1].followUp.aiResponse);
+                    
+                    // Check if there's a final response (two-step follow-up)
+                    console.log('Checking for finalResponse:', questions[currentQuestion - 1].followUp.finalResponse);
+                    if (questions[currentQuestion - 1].followUp.finalResponse) {
+                        console.log('finalResponse found, showing additional question');
+                        // Show additional question and wait for response
+                        setTimeout(() => {
+                            console.log('Calling showAdditionalQuestion from selectFollowUpAnswer');
+                            showAdditionalQuestion();
+                        }, 1500);
+                    } else {
+                        console.log('No finalResponse, proceeding to next question');
+                        // Move to next question or finish
+                        setTimeout(() => {
+                            if (currentQuestion < totalQuestions) {
+                                nextQuestion();
+                            } else {
+                                finishSurvey();
+                            }
+                        }, 1500);
+                    }
+                }, 1000);
+            }, 1000);
+        }
+
+        function showFreeTextInput() {
+            // Hide follow-up question
+            document.getElementById('currentQuestion').style.display = 'none';
+            
+            // Get the current question to determine the appropriate placeholder
+            const currentQ = questions[currentQuestion - 1];
+            let placeholder = "Please tell us more about what made it hard...";
+            
+            if (currentQ.id === 2) {
+                placeholder = "Please tell us more about what happened with your airport pickup...";
+            }
+            
+            // Show text input for free text
+            const freeTextHTML = `
+                <div class="question-container" id="freeTextInput">
+                    <div class="text-input-container">
+                        <textarea id="freeTextAnswer" placeholder="${placeholder}" rows="4"></textarea>
+                        <button class="btn" onclick="submitFreeTextAnswer()">Submit</button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('currentQuestion').innerHTML = freeTextHTML;
+            document.getElementById('currentQuestion').style.display = 'block';
+        }
+
+        function submitFreeTextAnswer() {
+            if (window.freeTextSubmitted) return;
+            window.freeTextSubmitted = true;
+            
+            const freeText = document.getElementById('freeTextAnswer').value.trim();
+            if (!freeText) {
+                alert('Please enter your thoughts before submitting.');
+                window.freeTextSubmitted = false;
+                return;
+            }
+            
+            // Add user message
+            addUserMessage(freeText);
+            
+            // Hide free text input
+            document.getElementById('currentQuestion').style.display = 'none';
+            
+            // Process free text answer
+            conversationHistory.push({
+                question: "Follow-up: " + questions[currentQuestion - 1].followUp.question,
+                answer: freeText,
+                timestamp: new Date()
+            });
+            
+            // Show AI response to free text
+            setTimeout(() => {
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    
+                    // Get appropriate AI response based on current question
+                    const currentQ = questions[currentQuestion - 1];
+                    let aiResponse;
+                    if (currentQ.id === 1) {
+                        aiResponse = "Thanks for sharing those details, Isabel. Would a push notification when your itinerary updates help next time?";
+                    } else if (currentQ.id === 2) {
+                        aiResponse = "Thanks for sharing those details, Isabel. Next time at MIA, would a map + photo of the meeting point in the app help?";
+                    } else {
+                        aiResponse = "Thanks for sharing those details, Isabel.";
+                    }
+                    
+                    addAIMessage(aiResponse);
+                    
+                    // Show additional question and wait for response
+                    setTimeout(() => {
+                        console.log('Calling showAdditionalQuestion from submitFreeTextAnswer');
+                        showAdditionalQuestion();
+                    }, 1500);
+                }, 1000);
+            }, 1000);
+        }
+
+        function showProgressBarQuestion() {
+            console.log('showProgressBarQuestion called');
+            if (window.additionalQuestionShown) {
+                console.log('Progress bar question already shown, returning');
+                return;
+            }
+            window.additionalQuestionShown = true;
+            showTypingIndicator();
+            setTimeout(() => {
+                hideTypingIndicator();
+                
+                const questionText = "Would a progress bar (\"Received → Processing → Verified\") help? Please answer Yes or No:";
+                console.log('Adding AI message:', questionText);
+                addAIMessage(questionText);
+                
+                // Show Yes/No options
+                const additionalHTML = `
+                    <div class="question-container" id="additionalQuestion">
+                        <div class="answer-options">
+                            <div class="answer-option" onclick="selectProgressBarAnswer(this, 'Yes')">
+                                <input type="radio" name="progressBar" id="progressBarYes" value="Yes">
+                                <label for="progressBarYes">Yes</label>
+                            </div>
+                            <div class="answer-option" onclick="selectProgressBarAnswer(this, 'No')">
+                                <input type="radio" name="progressBar" id="progressBarNo" value="No">
+                                <label for="progressBarNo">No</label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('currentQuestion').innerHTML = additionalHTML;
+                document.getElementById('currentQuestion').style.display = 'block';
+                console.log('Progress bar question HTML set and displayed');
+            }, 1000);
+        }
+
+        function showAdditionalQuestion() {
+            console.log('showAdditionalQuestion called');
+            if (window.additionalQuestionShown) {
+                console.log('Additional question already shown, returning');
+                return;
+            }
+            window.additionalQuestionShown = true;
+            showTypingIndicator();
+            setTimeout(() => {
+                hideTypingIndicator();
+                
+                // Get context-appropriate question based on current question
+                const currentQ = questions[currentQuestion - 1];
+                let questionText = "Please answer Yes or No:";
+                
+                if (currentQ.id === 1) {
+                    questionText = "Would a push notification when your itinerary updates help next time? Please answer Yes or No:";
+                } else if (currentQ.id === 2) {
+                    questionText = "Next time at MIA, would a map + photo of the meeting point in the app help? Please answer Yes or No:";
+                } else if (currentQ.id === 3) {
+                    questionText = "Would a progress bar (\"Received → Processing → Verified\") help? Please answer Yes or No:";
+                }
+                
+                console.log('Adding AI message:', questionText);
+                addAIMessage(questionText);
+                
+                // Show Yes/No options
+                const additionalHTML = `
+                    <div class="question-container" id="additionalQuestion">
+                        <div class="answer-options">
+                            <div class="answer-option" onclick="selectAdditionalAnswer(this, 'Yes')">
+                                <input type="radio" name="additional" id="additionalYes" value="Yes">
+                                <label for="additionalYes">Yes</label>
+                            </div>
+                            <div class="answer-option" onclick="selectAdditionalAnswer(this, 'No')">
+                                <input type="radio" name="additional" id="additionalNo" value="No">
+                                <label for="additionalNo">No</label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('currentQuestion').innerHTML = additionalHTML;
+                document.getElementById('currentQuestion').style.display = 'block';
+                console.log('Additional question HTML set and displayed');
+            }, 1000);
+        }
+
+        function selectProgressBarAnswer(element, answer) {
+            console.log('selectProgressBarAnswer called with:', answer);
+            if (window.additionalSelected) return;
+            window.additionalSelected = true;
+            
+            // Visual feedback for selection
+            const radio = element.querySelector('input[type="radio"]');
+            radio.checked = true;
+            element.classList.add('selected');
+            
+            // Add user message
+            addUserMessage(answer);
+            
+            // Hide additional question
+            document.getElementById('currentQuestion').style.display = 'none';
+            
+            // Show final AI response based on answer
+            setTimeout(() => {
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    
+                    let finalResponse;
+                    if (answer === 'Yes') {
+                        finalResponse = "Perfect, Isabel! I'll make sure we add that progress bar feature to help you track your document status.";
+                    } else {
+                        finalResponse = "I understand, Isabel. We'll work on other ways to improve the document upload experience.";
+                    }
+                    
+                    addAIMessage(finalResponse);
+                    
+                    // Move to next question or finish
+                    setTimeout(() => {
+                        if (currentQuestion < totalQuestions) {
+                            nextQuestion();
+                        } else {
+                            finishSurvey();
+                        }
+                    }, 1500);
+                }, 1000);
+            }, 1000);
+        }
+
+        function selectAdditionalAnswer(element, answer) {
+            console.log('selectAdditionalAnswer called with:', answer);
+            console.log('window.additionalSelected:', window.additionalSelected);
+            if (window.additionalSelected) return;
+            window.additionalSelected = true;
+            
+            // Visual feedback for selection
+            const radio = element.querySelector('input[type="radio"]');
+            radio.checked = true;
+            element.classList.add('selected');
+            
+            // Add user message
+            addUserMessage(answer);
+            
+            // Hide additional question
+            document.getElementById('currentQuestion').style.display = 'none';
+            
+            // Show final AI response based on answer
+            setTimeout(() => {
+                showTypingIndicator();
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    
+                    // Get appropriate response based on answer and question
+                    let finalResponse;
+                    const currentQ = questions[currentQuestion - 1];
+                    
+                    if (answer === 'Yes') {
+                        finalResponse = currentQ.followUp.finalResponse;
+                    } else {
+                        // Get the "no" response or use a context-appropriate default
+                        if (currentQ.followUp.finalResponseNo) {
+                            finalResponse = currentQ.followUp.finalResponseNo;
+                        } else {
+                            // Context-appropriate default responses
+                            if (currentQ.id === 1) {
+                                finalResponse = "I understand, Isabel. We'll work on making the itinerary section more visible in the app instead.";
+                            } else if (currentQ.id === 2) {
+                                finalResponse = "I understand, Isabel. We'll focus on improving the greeter visibility and signage at the airport instead.";
+                            } else if (currentQ.id === 3) {
+                                finalResponse = "I understand, Isabel. We'll work on other ways to improve the document upload experience.";
+                            } else {
+                                finalResponse = "I understand, Isabel. We'll make sure not to send you unnecessary notifications.";
+                            }
+                        }
+                    }
+                    
+                    addAIMessage(finalResponse);
+                    
+                    // Move to next question or finish
+                    setTimeout(() => {
+                        if (currentQuestion < totalQuestions) {
+                            nextQuestion();
+                        } else {
+                            finishSurvey();
+                        }
+                    }, 1500);
+                }, 1000);
+            }, 1000);
+        }
+
+        // Simulate data collection and AI processing
+        function simulateDataCollection(answer, questionIndex) {
+            const question = questions[questionIndex];
+            
+            // Simulate different data collection based on question type
+            if (question.type === 'star-rating') {
+                const rating = parseInt(answer);
+                console.log('[write] answers.itinerary_visibility.rating = ' + rating);
+                if (rating <= 2) {
+                    console.log('[write] tags: itinerary_visibility, late_feed, missing_push');
+                }
+            } else if (question.type === 'yes-no') {
+                console.log('[write] answers.pickup_issue.had_issue = ' + (answer === 'Yes'));
+                if (answer === 'Yes') {
+                    console.log('[write] tags: pickup_issue, greeter_visibility');
+                }
+            } else if (question.id === 2 && answer.includes('greeter')) {
+                console.log('[AI → NLU] greeter_visibility');
+                console.log('[write] tags: pickup_issue, greeter_visibility');
+            } else if (question.id === 2 && answer.includes('Driver was late')) {
+                console.log('[AI → NLU] driver_late');
+                console.log('[write] tags: pickup_issue, driver_late');
+            } else if (question.id === 2 && answer.includes('QR scan')) {
+                console.log('[AI → NLU] qr_scan_fail');
+                console.log('[write] tags: pickup_issue, qr_scan_fail');
+            } else if (question.type === 'open-text') {
+                const sentiment = analyzeSentiment(answer);
+                console.log('[write] free_text + tags reinforced');
+                if (question.id === 3 && sentiment === 'negative') {
+                    console.log('[AI → NLU] doc_status_not_updating');
+                    console.log('[AI → Suggest dynamic follow-up] "Ask if realtime progress bar would help."');
+                    console.log('[AI → Sentiment] negative (0.31)');
+                    console.log('[write] tags: doc_upload, status_not_updating; ux_need.doc_status_progress = true');
+                }
+            }
+            
+            // Simulate session tracking
+            if (questionIndex === 0) {
+                console.log('[write] session.start({ tmid, locale:\'fil-PH\' })');
+            }
+        }
+
+        // AI Features: Sentiment Analysis and Translation
+        function analyzeSentiment(text) {
+            // Simple sentiment analysis simulation
+            const negativeWords = ['hard', 'difficult', 'late', 'missing', 'slow', 'crashed', 'confused', 'pending', 'still', 'showed', 'uploaded', 'medical', 'status', 'problem', 'issue', 'trouble', 'error', 'failed', 'stuck', 'not working', 'broken', 'frustrating', 'annoying', 'terrible', 'awful', 'bad', 'wrong', 'incorrect', 'doesn\'t work', 'won\'t work', 'can\'t upload', 'unable', 'impossible'];
+            const positiveWords = ['easy', 'great', 'good', 'excellent', 'smooth', 'clear', 'helpful', 'perfect', 'wonderful', 'amazing', 'fantastic', 'quick', 'fast', 'simple', 'straightforward', 'convenient', 'efficient', 'reliable', 'working', 'successful', 'completed', 'done', 'finished', 'uploaded successfully', 'no problem', 'no issues'];
+            
+            const lowerText = text.toLowerCase();
+            let sentiment = 0;
+            
+            console.log('Analyzing sentiment for text:', text);
+            console.log('Lowercase text:', lowerText);
+            
+            negativeWords.forEach(word => {
+                if (lowerText.includes(word)) {
+                    console.log('Found negative word:', word);
+                    sentiment -= 1;
+                }
+            });
+            
+            positiveWords.forEach(word => {
+                if (lowerText.includes(word)) {
+                    console.log('Found positive word:', word);
+                    sentiment += 1;
+                }
+            });
+            
+            console.log('Final sentiment score:', sentiment);
+            const result = sentiment < 0 ? 'negative' : sentiment > 0 ? 'positive' : 'neutral';
+            console.log('Sentiment result:', result);
+            return result;
+        }
+
+        function simulateTranslation(text) {
+            // Simulate translation detection and response
+            const filipinoWords = ['oo', 'handa', 'salamat', 'pakiusap', 'pasensya', 'tulong', 'mabuti', 'masaya'];
+            const lowerText = text.toLowerCase();
+            
+            return filipinoWords.some(word => lowerText.includes(word)) ? 'fil' : 'en';
+        }
+
+        function getContextualResponse(answer, questionIndex, sentiment) {
+            const question = questions[questionIndex];
+            const responses = question.aiResponses;
+            
+            // Add sentiment-based responses
+            if (sentiment === 'negative' && question.type === 'star-rating') {
+                const rating = parseInt(answer);
+                if (rating <= 2) {
+                    return responses[rating.toString()] + " I can see this was frustrating for you. Let me help you with some specific options.";
+                }
+            }
+            
+            // Handle document upload question with sentiment-based responses
+            if (question.id === 3 && question.type === 'open-text') {
+                if (sentiment === 'negative') {
+                    return responses.negative || "Sorry for the confusion, Isabel.";
+                } else {
+                    return responses.positive || "That's great, Isabel! I'm glad the document upload went smoothly for you.";
+                }
+            }
+            
+            return responses[answer] || responses["default"];
         }
 
         // Get AI response based on answer and question
@@ -724,32 +1349,49 @@
             const question = questions[questionIndex];
             const responses = question.aiResponses;
             
-            if (question.type === 'nps') {
-                const score = parseInt(answer);
-                if (score >= 9) return responses["9-10"];
-                if (score >= 7) return responses["7-8"];
-                if (score >= 5) return responses["5-6"];
-                if (score >= 3) return responses["3-4"];
-                return responses["0-2"];
-            } else if (question.type === 'star-rating') {
-                const rating = parseInt(answer);
-                return responses[rating.toString()];
-            } else if (question.type === 'open-text') {
-                return responses["default"];
-            } else if (question.type === 'multiple-choice') {
-                // For multiple choice, we'll handle it differently
-                return "Thanks for sharing that! It's helpful to know which features you find most useful.";
-            } else {
-                // Single choice
-                return responses[answer] || "Thank you for your feedback!";
+            // Analyze sentiment for open text answers
+            let sentiment = 'neutral';
+            if (question.type === 'open-text') {
+                sentiment = analyzeSentiment(answer);
             }
+            
+            // Check for language detection
+            const detectedLanguage = simulateTranslation(answer);
+            if (detectedLanguage === 'fil') {
+                // Simulate AI understanding Filipino
+                console.log('[AI → Translate] fil → en → "' + answer + '"');
+                console.log('[AI → Sentiment] negative (0.21) → tone = empathetic');
+            }
+            
+            // Simulate AI processing
+            if (question.type === 'open-text') {
+                console.log('[AI → NLU] doc_status_not_updating');
+                console.log('[AI → Suggest dynamic follow-up] "Ask if realtime progress bar would help."');
+                console.log('[AI → Sentiment] ' + sentiment + ' (' + (sentiment === 'negative' ? '0.31' : '0.65') + ')');
+            }
+            
+            // Get contextual response
+            let response = getContextualResponse(answer, questionIndex, sentiment);
+            
+            // Add sentiment-based tone
+            if (sentiment === 'negative') {
+                response = "I understand your frustration. " + response;
+            } else if (sentiment === 'positive') {
+                response = "That's wonderful to hear! " + response;
+            }
+            
+            return response;
         }
 
         // Move to next question
         function nextQuestion() {
             currentQuestion++;
-            // Reset answer selection flag for next question
+            // Reset answer selection flags for next question
             window.answerSelected = false;
+            window.followUpSelected = false;
+            window.additionalSelected = false;
+            window.freeTextSubmitted = false;
+            window.additionalQuestionShown = false;
             showQuestion(currentQuestion - 1);
         }
 
@@ -777,6 +1419,17 @@
                 });
                 optionsHTML += `
                     <button class="btn btn-primary" style="margin-top: 1rem; width: 100%;" onclick="submitMultipleChoice()">Submit Selection</button>
+                `;
+            } else if (question.type === 'yes-no') {
+                optionsHTML = `
+                    <div class="answer-option" onclick="selectAnswer(this, 'Yes')">
+                        <input type="radio" name="question${question.id}" id="yes">
+                        <label for="yes">Yes</label>
+                    </div>
+                    <div class="answer-option" onclick="selectAnswer(this, 'No')">
+                        <input type="radio" name="question${question.id}" id="no">
+                        <label for="no">No</label>
+                    </div>
                 `;
             } else if (question.type === 'nps') {
                 optionsHTML = `
@@ -878,13 +1531,16 @@
 
         // Handle text answers
         function submitTextAnswer() {
+            console.log('submitTextAnswer called');
             // Prevent multiple clicks
             if (window.answerSelected) {
+                console.log('Answer already selected, returning');
                 return;
             }
             window.answerSelected = true;
             
             const textAnswer = document.getElementById('textAnswer').value;
+            console.log('Text answer:', textAnswer);
             if (textAnswer.trim()) {
                 selectedAnswer = textAnswer;
                 addUserMessage(textAnswer);
@@ -892,8 +1548,11 @@
                 
                 setTimeout(() => {
                     hideTypingIndicator();
+                    console.log('Calling processAnswer with:', textAnswer);
                     processAnswer(textAnswer);
                 }, 1500);
+            } else {
+                console.log('Empty text answer');
             }
         }
 
@@ -930,10 +1589,20 @@
 
         // Finish survey
         function finishSurvey() {
-            addAIMessage("Thank you so much for taking the time to complete this survey! 🙏 Your feedback is incredibly valuable to us and will help us improve our service.");
+            // Simulate AI summary generation
+            console.log('[AI → Abstractive summary for ops]');
+            console.log('"TM reports late itinerary updates without push; greeter hard to locate at MIA; document status lags; needs unified checklist; prefers push/WhatsApp; language: Filipino (fil-PH)."');
+            console.log('[write] Upsert issue_ledger topics:');
+            console.log('  pickup.greeter_visibility@MIA (open)');
+            console.log('  docs.status_sync_latency (open)');
+            console.log('  travel.itinerary_late_feed (open)');
+            console.log('[write] Upsert tm_preferences (push on itinerary, channels, language: fil-PH)');
+            console.log('[write] Emit events: survey.response.recorded, ops.issue.opened, prefs.updated, ai.summary.ready');
+            
+            addAIMessage("Thank you so much for taking the time to complete this travel survey, Isabel! 🙏 Your feedback is incredibly valuable to me and will help us improve your next travel experience.");
             
             setTimeout(() => {
-                addAIMessage("We really appreciate your input, and we'll use it to make our service even better for you and other customers. Have a great day! 😊");
+                addAIMessage("I really appreciate your input, Isabel, and I'll make sure to use it to make your next travel experience even better. Have a great day! 😊");
                 
                 // Show restart option after completion
                 setTimeout(() => {
@@ -975,6 +1644,12 @@
             // Reset flags
             window.readinessSelected = false;
             window.answerSelected = false;
+            window.followUpSelected = false;
+            window.additionalSelected = false;
+            window.freeTextSubmitted = false;
+            window.additionalQuestionShown = false;
+            window.sessionEnded = false;
+            window.otherSurveysShown = false;
             
             // Clear chat messages
             const chatMessages = document.getElementById('chatMessages');
@@ -991,7 +1666,7 @@
                 showTypingIndicator();
                 setTimeout(() => {
                     hideTypingIndicator();
-                    addAIMessage("Great! Let's start fresh. I'll guide you through the survey again.");
+                    addAIMessage("Great! Let's start fresh. I'll guide you through the travel survey again.");
                     
                     setTimeout(() => {
                         showQuestion(0);
@@ -1002,6 +1677,9 @@
 
         // Show other surveys
         function showOtherSurveys() {
+            if (window.otherSurveysShown) return;
+            window.otherSurveysShown = true;
+            
             addUserMessage("View other surveys 📋");
             
             const questionContainer = document.getElementById('currentQuestion');
@@ -1041,6 +1719,9 @@
 
         // End session
         function endSession() {
+            if (window.sessionEnded) return;
+            window.sessionEnded = true;
+            
             addUserMessage("End session 👋");
             
             const questionContainer = document.getElementById('currentQuestion');
@@ -1050,7 +1731,7 @@
                 showTypingIndicator();
                 setTimeout(() => {
                     hideTypingIndicator();
-                    addAIMessage("Thank you for your time! It was great chatting with you. Take care! 😊");
+                    addAIMessage("Thank you for your time, Isabel! It was great chatting with you. Take care! 😊");
                 }, 1500);
             }, 1000);
         }
